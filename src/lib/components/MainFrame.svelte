@@ -7,7 +7,8 @@
   "title": "",
   "resizable": true,
   "legend": {
-    "enabled" : false
+    "enabled" : true,
+    "alignment" : "center"
   },
   "donut": {
     "center": {

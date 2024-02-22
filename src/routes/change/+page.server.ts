@@ -19,7 +19,5 @@ export const load = (async () => {
             type : true
         }
     });
-    console.log(incomes);
-    // console.log(expenses);
 	return { incomes , expenses};
 }) satisfies PageServerLoad;

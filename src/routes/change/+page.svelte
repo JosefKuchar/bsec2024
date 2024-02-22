@@ -8,13 +8,14 @@
 	import { DataHandler } from '@vincjo/datatables';
 	import type { PageData } from './$types';
     import Time from "svelte-time";
+    import { RadioGroup, RadioItem } from '@skeletonlabs/skeleton';
     import Dateformatter from '$lib/dateformatter.svelte';
 
 	export let data: PageData;
-    const incomes_handler = new DataHandler(data.incomes, { rowsPerPage: 1 });
+    const incomes_handler = new DataHandler(data.incomes, { rowsPerPage: 10 });
     const expenses_handler = new DataHandler(data.expenses, { rowsPerPage: 10 });
 
-    let dir_bool = true;
+    let dir_bool:boolean = false;
 
 
     $: handler = dir_bool ? incomes_handler : expenses_handler;
@@ -24,6 +25,10 @@
 </script>
 
 <div>
+    <RadioGroup>
+        <RadioItem bind:group={dir_bool} name="justify" value={true}>Příjmy</RadioItem>
+        <RadioItem bind:group={dir_bool} name="justify" value={false}>Výdaje</RadioItem>
+    </RadioGroup>
 	<h1>My Blog</h1>
 	<main>
 		<div class="table-container space-y-4">
@@ -35,9 +40,20 @@
 				<thead>
 					<tr>
 						<ThSort {handler} orderBy="name">Název</ThSort>
+                        <ThSort {handler} orderBy="amount">Částka</ThSort>
+                        <ThSort {handler} orderBy="from">Od</ThSort>
+                        <ThSort {handler} orderBy="to">Do</ThSort>
+                        <ThSort {handler} orderBy="frequency">Frekvence</ThSort>
+                        <ThSort {handler} orderBy="type">Typ</ThSort>
 					</tr>
 					<tr>
 						<ThFilter {handler} filterBy="name" />
+                        <ThFilter {handler} filterBy="amount" />
+                        <ThFilter {handler} filterBy="from" />
+                        <ThFilter {handler} filterBy="to" />
+                        <ThFilter {handler} filterBy="frequency" />
+                        <ThFilter {handler} filterBy="type" />
+
 					</tr>
 				</thead>
 				<tbody>
@@ -45,11 +61,12 @@
 						<tr>
 							<td>{row.typeId}</td>
                             <td>{row.amount}</td>
-                            <td>{row.from}</td>
+                            <td>
+                                <Dateformatter date_string={row.from} />
+                            </td>
                             <td>
                                 <Dateformatter date_string={row.to} />
                             </td>
-                            <td>{row.to}</td>
                             <td>{row.frequency}</td>
                             <!-- todo fix type missing in page data -->
                             <td>{row.type.name}</td>

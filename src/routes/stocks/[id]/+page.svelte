@@ -29,9 +29,14 @@
 	};
 </script>
 
+{#if data.data.id === 0}
+	<h1 class="h1 my-5">Nová akcie</h1>
+{:else}
+	<h1 class="h1 my-5">Akcie {data.data.name}</h1>
+{/if}
 <div>
 	<form on:submit={handleSubmit}>
-		<div class="p-4 w-full space-y-4">
+		<div class="w-full space-y-4">
 			<label class="label">
 				<span>Název</span>
 				<input bind:value={data.data.name} class="input" type="text" />

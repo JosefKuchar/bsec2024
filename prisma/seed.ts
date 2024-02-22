@@ -24,7 +24,56 @@ async function main() {
 				});
 			});
 		});
-}
+
+
+		await prisma.changeType.create({
+			data: {
+				name: "Důchod"
+			}
+		});
+
+		await prisma.changeType.create({
+			data: {
+				name: "Práce"
+			}
+		});
+
+		//  hardocoded data
+		await prisma.change.create({
+			data: {
+				amount : 1,
+				from : new Date(),
+				to : new Date(),
+				dir : 1,
+				frequency : 1,
+				typeId : 1
+			}
+		});
+
+		await prisma.change.create({
+			data: {
+				amount : 1,
+				from : new Date(),
+				to : new Date(),
+				dir : 1,
+				frequency : 1,
+				typeId : 2
+			}
+		});
+
+		await prisma.change.create({
+			data: {
+				amount : 1,
+				from : new Date(),
+				to : new Date(),
+				dir : 2,
+				frequency : 1,
+				typeId : 2
+			}
+		});
+	}
+
+
 
 main()
 	.then(async () => {

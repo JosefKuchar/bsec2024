@@ -45,8 +45,13 @@
 		"seed": "tsx prisma/seed.ts"
 	},
 	"dependencies": {
+		"@carbon/charts-svelte": "^1.14.3",
 		"@prisma/client": "^5.10.2",
 		"@vincjo/datatables": "^1.14.5",
-		"csvtojson": "^2.0.10"
+		"chartjs": "^0.3.24",
+		"csvtojson": "^2.0.10",
+		"d3": "^7.8.5",
+		"d3-cloud": "^1.2.7",
+		"d3-sankey": "^0.12.3"
 	}
 }

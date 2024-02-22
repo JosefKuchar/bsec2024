@@ -1,34 +1,41 @@
+import { Dir } from '$lib/enums';
 import prisma from '$lib/prisma';
 import type { PageServerLoad } from './$types';
 
-export const load = (async ({ params }) => {
-
-
-	// const flavorOptions: AutocompleteOption<string>[] = [
-	// 	{ label: 'Vanilla', value: 'vanilla', keywords: 'plain, basic', meta: { healthy: false } },
-	// 	{ label: 'Chocolate', value: 'chocolate', keywords: 'dark, white', meta: { healthy: false } },
-	// 	{ label: 'Strawberry', value: 'strawberry', keywords: 'fruit', meta: { healthy: true } },
-	// 	{ label: 'Neapolitan', value: 'neapolitan', keywords: 'mix, strawberry, chocolate, vanilla', meta: { healthy: false } },
-	// 	{ label: 'Pineapple', value: 'pineapple', keywords: 'fruit', meta: { healthy: true } },
-	// 	{ label: 'Peach', value: 'peach', keywords: 'fruit', meta: { healthy: true } }
-	// 	];
-
-
-	const changeTypes = await (await prisma.changeType.findMany()).map((changeType) => {
+export const load: PageServerLoad = async ({ params }) => {
+	const changeTypes = await (
+		await prisma.changeType.findMany()
+	).map((changeType) => {
 		return {
 			label: changeType.name,
 			value: changeType.id.toString(),
+			dir: changeType.dir
 		};
 	});
 
-	if (params.id === 'new') {
+	if (params.id === 'new-income') {
 		return {
 			data: {
 				id: 0,
 				amount: null,
 				from: null,
 				to: null,
-				dir: null,
+				dir: Dir.Incomes,
+				frequency: null,
+				typeId: null
+			},
+			changeTypes
+		};
+	}
+
+	if (params.id === 'new-expense') {
+		return {
+			data: {
+				id: 0,
+				amount: null,
+				from: null,
+				to: null,
+				dir: Dir.Expenses,
 				frequency: null,
 				typeId: null
 			},
@@ -41,5 +48,5 @@ export const load = (async ({ params }) => {
 			id: parseInt(params.id)
 		}
 	});
-	return { data: response!, changeTypes};
-}) satisfies PageServerLoad;
+	return { data: response!, changeTypes };
+};

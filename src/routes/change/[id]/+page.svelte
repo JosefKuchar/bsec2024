@@ -30,6 +30,8 @@
 		inputType = event.detail.label;
 		data.data.typeId = Number(event.detail.value);
 	}
+
+	$: filteredTypes = data.changeTypes.filter((type) => type.dir === data.data.dir);
 </script>
 
 <div>
@@ -53,11 +55,7 @@
 	<!-- input suma -->
 	<input class="input" type="search" name="demo" bind:value={inputType} placeholder="Search..." />
 	<div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1">
-		<Autocomplete
-			bind:input={inputType}
-			options={data.changeTypes}
-			on:selection={onFlavorSelection}
-		/>
+		<Autocomplete bind:input={inputType} options={filteredTypes} on:selection={onFlavorSelection} />
 	</div>
 
 	<input class="input" type="number" placeholder="Suma" bind:value={data.data.amount} />

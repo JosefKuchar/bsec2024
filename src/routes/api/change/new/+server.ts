@@ -15,8 +15,7 @@ export const POST: RequestHandler = async (event) => {
 				connect: {
 					id: typeId
 				}
-			},
-			dir: 1
+			}
 		}
 	});
 	return new Response();

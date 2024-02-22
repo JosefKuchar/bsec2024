@@ -80,7 +80,7 @@
 				</tbody>
 			</table>
 			<footer class="flex justify-between">
-				<!-- <RowCount {handler} /> -->
+				<RowCount {handler} />
 				<Pagination {handler} />
 			</footer>
 		</div>

@@ -12,7 +12,7 @@
 	import Dateformatter from '$lib/dateformatter.svelte';
 	import { Frequency } from '$lib/enums';
 	import { Autocomplete } from '@skeletonlabs/skeleton';
-	import { getTodayFormatted } from '$lib/utils';
+	import { getFrequencyString, getTodayFormatted } from '$lib/utils';
 	import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
 	let date_now = getTodayFormatted();
@@ -29,6 +29,7 @@
 </script>
 
 <div>
+	<h1 class="h1 my-5">{dir_bool ? 'Příjmy' : 'Výdaje'}</h1>
 	<main>
 		<div class="table-container space-y-4">
 			<header class="flex justify-between gap-4">
@@ -37,7 +38,12 @@
 					<RadioItem bind:group={dir_bool} name="justify" value={true}>Příjmy</RadioItem>
 					<RadioItem bind:group={dir_bool} name="justify" value={false}>Výdaje</RadioItem>
 				</RadioGroup>
-				<RowsPerPage {handler} />
+				<div class="flex gap-4">
+					<RowsPerPage {handler} />
+					<a class="btn variant-filled-primary" href="change/new"
+						>Nový {dir_bool ? 'příjem' : 'výdaj'}</a
+					>
+				</div>
 			</header>
 			<table class="table table-hover table-compact table-auto w-full">
 				<thead>
@@ -58,7 +64,7 @@
 				</thead>
 				<tbody>
 					{#each $rows as row}
-						<tr on:click={() => handleEditClick(row.id)}>
+						<tr on:click={() => handleEditClick(row.id)} class="cursor-pointer">
 							<td>{row.type.name}</td>
 							<td>{row.amount} Kč</td>
 							<td>

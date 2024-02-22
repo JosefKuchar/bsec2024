@@ -1,5 +1,14 @@
 <script lang="ts">
 	import '../app.postcss';
+	import { AppShell } from '@skeletonlabs/skeleton';
+	import Sidebar from '$lib/components/Sidebar.svelte';
 </script>
 
-<slot />
+<AppShell>
+	<svelte:fragment slot="sidebarLeft">
+		<Sidebar/>
+	</svelte:fragment>
+	<slot />
+</AppShell>
+
+

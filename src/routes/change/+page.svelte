@@ -15,6 +15,7 @@
 	import { getTodayFormatted } from '$lib/utils';
 	import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
+	import {frequencyToString} from '$lib/enums';
 
     let date_now = getTodayFormatted();
 
@@ -76,6 +77,7 @@
 			goto('/change');
 		});
 	};
+
 
 </script>
 
@@ -160,7 +162,7 @@
                             <td>
                                 <Dateformatter date_string={row.to} />
                             </td>
-                            <td>{row.frequency}</td>
+                            <td>{frequencyToString(row.frequency)}</td>
                             <!-- todo fix type missing in page data -->
 						</tr>
 					{/each}

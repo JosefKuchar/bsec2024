@@ -27,7 +27,7 @@ model Investment {
 model ChangeType {
   id     Int      @id @default(autoincrement())
   name   String
-  dir   Int
+  dir   Int     @default(1)
   Change Change[]
 }
 

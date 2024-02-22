@@ -11,7 +11,7 @@
 
 	const handleSubmit = (e: Event) => {
 		e.preventDefault();
-		fetch(`/api/change/add`, {
+		fetch(`/api/change/new`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

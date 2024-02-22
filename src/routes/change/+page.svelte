@@ -7,12 +7,12 @@
 	import Pagination from '$lib/components/client/Pagination.svelte';
 	import { DataHandler } from '@vincjo/datatables';
 	import type { PageData } from './$types';
-    import Time from "svelte-time";
-    import { RadioGroup, RadioItem, popup } from '@skeletonlabs/skeleton';
-    import Dateformatter from '$lib/dateformatter.svelte';
+	import Time from 'svelte-time';
+	import { RadioGroup, RadioItem, popup } from '@skeletonlabs/skeleton';
+	import Dateformatter from '$lib/dateformatter.svelte';
 	import { Frequency } from '$lib/enums';
 	import { Autocomplete } from '@skeletonlabs/skeleton';
-	import { getTodayFormatted } from '$lib/utils';
+	import { getFrequencyString, getTodayFormatted } from '$lib/utils';
 	import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
 	import {frequencyToString} from '$lib/enums';
@@ -22,25 +22,14 @@
     $: console.log('minDate', date_now);
 
 	export let data: PageData;
-	let formdata = {
-		name: '',
-		amount: 0,
-		from: '',
-		to: '',
-		frequency: Frequency.OneTime,
-		type: 1,
-	}
-    const incomes_handler = new DataHandler(data.incomes, { rowsPerPage: 10 });
-    const expenses_handler = new DataHandler(data.expenses, { rowsPerPage: 10 });
+	const incomes_handler = new DataHandler(data.incomes, { rowsPerPage: 10 });
+	const expenses_handler = new DataHandler(data.expenses, { rowsPerPage: 10 });
+	let dir_bool: boolean = true;
+	$: handler = dir_bool ? incomes_handler : expenses_handler;
+	$: rows = handler.getRows();
 
-    let dir_bool:boolean = true;
-	let frequency: Frequency = Frequency.OneTime;
-	let sum: number = 0;
-
-	let popupSettings: PopupSettings = {
-	event: 'focus-click',
-	target: 'popupAutocomplete',
-	placement: 'bottom',
+	const handleEditClick = (stockId: number) => {
+		goto(`/change/${stockId}`);
 	};
 
     $: handler = dir_bool ? incomes_handler : expenses_handler;
@@ -82,78 +71,42 @@
 </script>
 
 <div>
-    <RadioGroup>
-        <RadioItem bind:group={dir_bool} name="justify" value={true}>Příjmy</RadioItem>
-        <RadioItem bind:group={dir_bool} name="justify" value={false}>Výdaje</RadioItem>
-    </RadioGroup>
-	<div>
-		<!-- pridavani polozky , dropdown typ, suma, radio item frekvence, datepicker od/do -->
-		<!-- typ autocomplete -->
-		<!-- <input
-			class="input autocomplete"
-			type="search"
-			name="autocomplete-search"
-			bind:value={formdata.type}
-			placeholder="Search..."
-			use:popup={popupSettings}
-		/>
-		<div data-popup="popupAutocomplete">
-			<Autocomplete
-				bind:input={formdata.type}
-				options={flavorOptions}
-				on:selection={onPopupDemoSelect}
-			/>
-		</div> -->
-		<!-- input suma -->
-		<input class="input" type="number" placeholder="Suma" bind:value={formdata.amount} />
-		
-		<RadioGroup>
-			<RadioItem bind:group={formdata.frequency} name="justify" value={Frequency.OneTime}>Jednorázově</RadioItem>
-			<RadioItem bind:group={formdata.frequency} name="justify" value={Frequency.Daily}>Denně</RadioItem>
-			<RadioItem bind:group={formdata.frequency} name="justify" value={Frequency.Monthly}>Týdně</RadioItem>
-			<RadioItem bind:group={formdata.frequency} name="justify" value={Frequency.Weekly}>Měsíčně</RadioItem>
-			<RadioItem bind:group={formdata.frequency} name="justify" value={Frequency.Yearly}>Ročně</RadioItem>
-		</RadioGroup>
-		<!-- time picker -->
-
-		<!-- add button -->
-		{#if formdata.frequency === Frequency.OneTime}
-		<input class="input w-40" title="Input (date)" type="date" bind:value={formdata.from} min={date_now}/>
-		{:else}
-		<input class="input w-40" title="Input (date)" type="date" bind:value={formdata.from} min={date_now}/>
-		
-		<input class="input w-40" title="Input (date)" type="date" bind:value={formdata.to} min={date_now}/>
-		{/if}
-		<button type="button" class="btn variant-filled" on:click={handleSubmit}>Přidat</button>
-
-	</div>
+	<h1 class="h1 my-5">{dir_bool ? 'Příjmy' : 'Výdaje'}</h1>
 	<main>
 		<div class="table-container space-y-4">
 			<header class="flex justify-between gap-4">
 				<Search {handler} />
-				<RowsPerPage {handler} />
+				<RadioGroup>
+					<RadioItem bind:group={dir_bool} name="justify" value={true}>Příjmy</RadioItem>
+					<RadioItem bind:group={dir_bool} name="justify" value={false}>Výdaje</RadioItem>
+				</RadioGroup>
+				<div class="flex gap-4">
+					<RowsPerPage {handler} />
+					<a class="btn variant-filled-primary" href="change/new"
+						>Nový {dir_bool ? 'příjem' : 'výdaj'}</a
+					>
+				</div>
 			</header>
 			<table class="table table-hover table-compact table-auto w-full">
 				<thead>
 					<tr>
 						<ThSort {handler} orderBy="name">Název</ThSort>
-                        <ThSort {handler} orderBy="amount">Částka</ThSort>
-                        <ThSort {handler} orderBy="from">Od</ThSort>
-                        <ThSort {handler} orderBy="to">Do</ThSort>
-                        <ThSort {handler} orderBy="frequency">Frekvence</ThSort>
+						<ThSort {handler} orderBy="amount">Částka</ThSort>
+						<ThSort {handler} orderBy="from">Od</ThSort>
+						<ThSort {handler} orderBy="to">Do</ThSort>
+						<ThSort {handler} orderBy="frequency">Frekvence</ThSort>
 					</tr>
 					<tr>
 						<ThFilter {handler} filterBy="name" />
-                        <ThFilter {handler} filterBy="amount" />
-                        <ThFilter {handler} filterBy="from" />
-                        <ThFilter {handler} filterBy="to" />
-                        <ThFilter {handler} filterBy="frequency" />
-
+						<ThFilter {handler} filterBy="amount" />
+						<ThFilter {handler} filterBy="from" />
+						<ThFilter {handler} filterBy="to" />
+						<ThFilter {handler} filterBy="frequency" />
 					</tr>
 				</thead>
 				<tbody>
 					{#each $rows as row}
-						<tr>
+						<tr on:click={() => handleEditClick(row.id)} class="cursor-pointer">
 							<td>{row.type.name}</td>
                             <td>{row.amount} Kč</td>
                             <td>

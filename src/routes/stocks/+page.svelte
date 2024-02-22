@@ -25,7 +25,10 @@
 		<div class="table-container space-y-4">
 			<header class="flex justify-between gap-4">
 				<Search {handler} />
-				<RowsPerPage {handler} />
+				<div class="flex gap-4">
+					<RowsPerPage {handler} />
+					<a class="btn variant-filled-primary" href="stocks/new">Nová akcie</a>
+				</div>
 			</header>
 			<table class="table table-hover table-compact table-auto w-full">
 				<thead>
@@ -35,7 +38,7 @@
 						<ThSort {handler} orderBy="isin">ISIN</ThSort>
 						<ThSort {handler} orderBy="min">Min. cena</ThSort>
 						<ThSort {handler} orderBy="max">Max. cena</ThSort>
-						<ThSort {handler} orderBy="rate">Aktuální cena</ThSort>
+						<ThSort {handler} orderBy="rate">Cena</ThSort>
 						<ThSort {handler} orderBy="negative"><i class="las la-frown text-xl"></i> scénář</ThSort
 						>
 						<ThSort {handler} orderBy="neutral"><i class="las la-meh text-xl"></i> scénář</ThSort>
@@ -80,7 +83,7 @@
 				</tbody>
 			</table>
 			<footer class="flex justify-between">
-				<!-- <RowCount {handler} /> -->
+				<RowCount {handler} />
 				<Pagination {handler} />
 			</footer>
 		</div>

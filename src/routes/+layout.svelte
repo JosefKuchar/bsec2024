@@ -12,7 +12,11 @@
 	<svelte:fragment slot="pageHeader">
 		<PageHeader/>
 	</svelte:fragment>
-	<slot />
+	<svelte:fragment>
+		<div class="mx-10">
+			<slot />
+		</div>
+	</svelte:fragment>
 </AppShell>
 
 

@@ -14,13 +14,21 @@
 	import { Autocomplete } from '@skeletonlabs/skeleton';
 	import { getTodayFormatted } from '$lib/utils';
 	import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
-
+	import { goto } from '$app/navigation';
 
     let date_now = getTodayFormatted();
 
     $: console.log('minDate', date_now);
 
 	export let data: PageData;
+	let formdata = {
+		name: '',
+		amount: 0,
+		from: '',
+		to: '',
+		frequency: Frequency.OneTime,
+		type: 1,
+	}
     const incomes_handler = new DataHandler(data.incomes, { rowsPerPage: 10 });
     const expenses_handler = new DataHandler(data.expenses, { rowsPerPage: 10 });
 
@@ -53,14 +61,22 @@
 	{ label: 'Peach', value: 'peach', keywords: 'fruit', meta: { healthy: true } }
 	];
 
-	let count = 0;
-	function onbuttonadd() {
-		console.log("adding");
-		count++
-	}
-
 	// date
 	let selectedDate = getTodayFormatted();
+
+	const handleSubmit = (e: Event) => {
+		e.preventDefault();
+		fetch(`/api/change/add`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(formdata)
+		}).then(() => {
+			goto('/change');
+		});
+	};
+
 </script>
 
 <div>
@@ -71,35 +87,43 @@
 	<div>
 		<!-- pridavani polozky , dropdown typ, suma, radio item frekvence, datepicker od/do -->
 		<!-- typ autocomplete -->
-		<input
+		<!-- <input
 			class="input autocomplete"
 			type="search"
 			name="autocomplete-search"
-			bind:value={inputPopupDemo}
+			bind:value={formdata.type}
 			placeholder="Search..."
 			use:popup={popupSettings}
 		/>
 		<div data-popup="popupAutocomplete">
 			<Autocomplete
-				bind:input={inputPopupDemo}
+				bind:input={formdata.type}
 				options={flavorOptions}
 				on:selection={onPopupDemoSelect}
 			/>
-		</div>
+		</div> -->
 		<!-- input suma -->
-		<input class="input" type="number" placeholder="Suma" bind:value={sum} />
+		<input class="input" type="number" placeholder="Suma" bind:value={formdata.amount} />
 		
 		<RadioGroup>
-			<RadioItem bind:group={frequency} name="justify" value={Frequency.OneTime}>Jednorázově</RadioItem>
-			<RadioItem bind:group={frequency} name="justify" value={Frequency.Daily}>Denně</RadioItem>
-			<RadioItem bind:group={frequency} name="justify" value={Frequency.Monthly}>Týdně</RadioItem>
-			<RadioItem bind:group={frequency} name="justify" value={Frequency.Weekly}>Měsíčně</RadioItem>
-			<RadioItem bind:group={frequency} name="justify" value={Frequency.Yearly}>Ročně</RadioItem>
+			<RadioItem bind:group={formdata.frequency} name="justify" value={Frequency.OneTime}>Jednorázově</RadioItem>
+			<RadioItem bind:group={formdata.frequency} name="justify" value={Frequency.Daily}>Denně</RadioItem>
+			<RadioItem bind:group={formdata.frequency} name="justify" value={Frequency.Monthly}>Týdně</RadioItem>
+			<RadioItem bind:group={formdata.frequency} name="justify" value={Frequency.Weekly}>Měsíčně</RadioItem>
+			<RadioItem bind:group={formdata.frequency} name="justify" value={Frequency.Yearly}>Ročně</RadioItem>
 		</RadioGroup>
 		<!-- time picker -->
-		<input class="input w-40" title="Input (date)" type="date" bind:value={selectedDate} min={date_now}/>
+
 		<!-- add button -->
-		<button type="button" class="btn variant-filled" on:click={onbuttonadd}>(Pridat {count})</button>
+		{#if formdata.frequency === Frequency.OneTime}
+		<input class="input w-40" title="Input (date)" type="date" bind:value={formdata.from} min={date_now}/>
+		{:else}
+		<input class="input w-40" title="Input (date)" type="date" bind:value={formdata.from} min={date_now}/>
+		
+		<input class="input w-40" title="Input (date)" type="date" bind:value={formdata.to} min={date_now}/>
+		{/if}
+		<button type="button" class="btn variant-filled" on:click={handleSubmit}>Přidat</button>
+
 	</div>
 	<main>
 		<div class="table-container space-y-4">
@@ -115,7 +139,6 @@
                         <ThSort {handler} orderBy="from">Od</ThSort>
                         <ThSort {handler} orderBy="to">Do</ThSort>
                         <ThSort {handler} orderBy="frequency">Frekvence</ThSort>
-                        <ThSort {handler} orderBy="type">Typ</ThSort>
 					</tr>
 					<tr>
 						<ThFilter {handler} filterBy="name" />
@@ -123,14 +146,13 @@
                         <ThFilter {handler} filterBy="from" />
                         <ThFilter {handler} filterBy="to" />
                         <ThFilter {handler} filterBy="frequency" />
-                        <ThFilter {handler} filterBy="type" />
 
 					</tr>
 				</thead>
 				<tbody>
 					{#each $rows as row}
 						<tr>
-							<td>{row.typeId}</td>
+							<td>{row.type.name}</td>
                             <td>{row.amount} Kč</td>
                             <td>
                                 <Dateformatter date_string={row.from} />
@@ -140,7 +162,6 @@
                             </td>
                             <td>{row.frequency}</td>
                             <!-- todo fix type missing in page data -->
-                            <td>{row.type.name}</td>
 						</tr>
 					{/each}
 				</tbody>

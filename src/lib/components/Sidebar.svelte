@@ -19,7 +19,7 @@
 		<span>Domů</span>
 	</AppRailTile>
 	<!-- --- -->
-	<AppRailTile bind:group={currentTile} name="tile-1" value={1} title="tile-1" on:click={() => goto('/incomes')}>
+	<AppRailTile bind:group={currentTile} name="tile-1" value={1} title="tile-1" on:click={() => goto('/change')}>
 		<svelte:fragment slot="lead">
             <div class="flex items-center justify-center">
                 <img src={cash_white} alt="Description" class="h-8 w-8">

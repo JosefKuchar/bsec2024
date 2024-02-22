@@ -5,6 +5,7 @@
     import home_white from '../assets/home_white.svg';
     import graph_white from '../assets/graph_white.svg';
     import invest_white from '../assets/invest_white.svg';
+    import stocks_white from '../assets/stocks_white.svg';
     let currentTile: number = 0;
 
 </script>
@@ -19,7 +20,7 @@
 		<span>Domů</span>
 	</AppRailTile>
 	<!-- --- -->
-	<AppRailTile bind:group={currentTile} name="tile-1" value={1} title="tile-1" on:click={() => goto('/change')}>
+	<AppRailTile bind:group={currentTile} name="tile-1" value={1} title="tile-2" on:click={() => goto('/change')}>
 		<svelte:fragment slot="lead">
             <div class="flex items-center justify-center">
                 <img src={cash_white} alt="Description" class="h-8 w-8">
@@ -27,7 +28,7 @@
         </svelte:fragment>
 		<span>Příjmy a výdaje</span>
 	</AppRailTile>
-	<AppRailTile bind:group={currentTile} name="tile-2" value={2} title="tile-2" on:click={() => goto('/stocks')}>
+	<AppRailTile bind:group={currentTile} name="tile-2" value={2} title="tile-3" on:click={() => goto('/investments')}>
 		<svelte:fragment slot="lead">
             <div class="flex items-center justify-center">
                 <img src={invest_white} alt="Description" class="h-8 w-8">
@@ -35,7 +36,15 @@
         </svelte:fragment>
 		<span>Investice</span>
 	</AppRailTile>
-	<AppRailTile bind:group={currentTile} name="tile-3" value={3} title="tile-3" on:click={() => goto('/dashboard')}>
+    <AppRailTile bind:group={currentTile} name="tile-2" value={3} title="tile-4" on:click={() => goto('/stocks')}>
+		<svelte:fragment slot="lead">
+            <div class="flex items-center justify-center">
+                <img src={stocks_white} alt="Description" class="h-8 w-8">
+            </div>
+        </svelte:fragment>
+		<span>Akcie</span>
+	</AppRailTile>
+	<AppRailTile bind:group={currentTile} name="tile-3" value={4} title="tile-5" on:click={() => goto('/dashboard')}>
 		<svelte:fragment slot="lead">
             <div class="flex items-center justify-center">
                 <img src={graph_white} alt="Description" class="h-8 w-8">

@@ -11,14 +11,40 @@ datasource db {
 }
 
 model Investment {
-  id       Int    @id @default(autoincrement())
-  name     String
-  bic      String
-  isin     String
-  rate     Int
-  min      Int
-  max      Int
-  negative Float
-  neutral  Float
-  positive Float
+  id               Int                @id @default(autoincrement())
+  name             String
+  bic              String
+  isin             String
+  rate             Int
+  min              Int
+  max              Int
+  negative         Float
+  neutral          Float
+  positive         Float
+  InvestmentChange InvestmentChange[]
+}
+
+model ChangeType {
+  id     Int      @id @default(autoincrement())
+  name   String
+  Change Change[]
+}
+
+model Change {
+  id        Int        @id @default(autoincrement())
+  amount    Int
+  from      DateTime
+  to        DateTime
+  frequency Int
+  typeId    Int
+  type      ChangeType @relation(fields: [typeId], references: [id])
+}
+
+model InvestmentChange {
+  id           Int        @id @default(autoincrement())
+  type         Int
+  investmentId Int
+  frequency    Int
+  amount       Int
+  investment   Investment @relation(fields: [investmentId], references: [id])
 }

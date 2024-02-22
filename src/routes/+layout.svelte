@@ -2,11 +2,15 @@
 	import '../app.postcss';
 	import { AppShell } from '@skeletonlabs/skeleton';
 	import Sidebar from '$lib/components/Sidebar.svelte';
+	import PageHeader from '$lib/components/PageHeader.svelte';
 </script>
 
 <AppShell>
 	<svelte:fragment slot="sidebarLeft">
 		<Sidebar/>
+	</svelte:fragment>
+	<svelte:fragment slot="pageHeader">
+		<PageHeader/>
 	</svelte:fragment>
 	<slot />
 </AppShell>

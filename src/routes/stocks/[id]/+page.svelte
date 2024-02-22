@@ -5,15 +5,27 @@
 
 	const handleSubmit = (e: Event) => {
 		e.preventDefault();
-		fetch(`/api/stocks/edit`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data.data)
-		}).then(() => {
-			goto('/stocks');
-		});
+		if (data.data.id !== 0) {
+			fetch(`/api/stocks/edit`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data.data)
+			}).then(() => {
+				goto('/stocks');
+			});
+		} else {
+			fetch(`/api/stocks/new`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data.data)
+			}).then(() => {
+				goto('/stocks');
+			});
+		}
 	};
 </script>
 

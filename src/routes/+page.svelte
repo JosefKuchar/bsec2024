@@ -32,9 +32,7 @@
 				<Search {handler}/>
 				<div class="flex gap-4">
 					<RowsPerPage {handler} />
-					<a class="btn variant-filled-primary" href="change/new"
-						>Nový</a
-					>
+
 				</div>
 			</header>
 			<table class="table table-hover table-compact table-auto w-full">

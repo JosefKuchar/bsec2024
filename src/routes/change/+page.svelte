@@ -16,9 +16,9 @@
 	import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
 
-    let date_now = getTodayFormatted();
+	let date_now = getTodayFormatted();
 
-    $: console.log('minDate', date_now);
+	$: console.log('minDate', date_now);
 
 	export let data: PageData;
 	const incomes_handler = new DataHandler(data.incomes, { rowsPerPage: 10 });
@@ -31,7 +31,6 @@
 		goto(`/change/${stockId}`);
 	};
 
-
 	let inputPopupDemo: string = '';
 
 	function onPopupDemoSelect(event: CustomEvent<AutocompleteOption<string>>): void {
@@ -39,12 +38,17 @@
 	}
 
 	const flavorOptions: AutocompleteOption<string>[] = [
-	{ label: 'Vanilla', value: 'vanilla', keywords: 'plain, basic', meta: { healthy: false } },
-	{ label: 'Chocolate', value: 'chocolate', keywords: 'dark, white', meta: { healthy: false } },
-	{ label: 'Strawberry', value: 'strawberry', keywords: 'fruit', meta: { healthy: true } },
-	{ label: 'Neapolitan', value: 'neapolitan', keywords: 'mix, strawberry, chocolate, vanilla', meta: { healthy: false } },
-	{ label: 'Pineapple', value: 'pineapple', keywords: 'fruit', meta: { healthy: true } },
-	{ label: 'Peach', value: 'peach', keywords: 'fruit', meta: { healthy: true } }
+		{ label: 'Vanilla', value: 'vanilla', keywords: 'plain, basic', meta: { healthy: false } },
+		{ label: 'Chocolate', value: 'chocolate', keywords: 'dark, white', meta: { healthy: false } },
+		{ label: 'Strawberry', value: 'strawberry', keywords: 'fruit', meta: { healthy: true } },
+		{
+			label: 'Neapolitan',
+			value: 'neapolitan',
+			keywords: 'mix, strawberry, chocolate, vanilla',
+			meta: { healthy: false }
+		},
+		{ label: 'Pineapple', value: 'pineapple', keywords: 'fruit', meta: { healthy: true } },
+		{ label: 'Peach', value: 'peach', keywords: 'fruit', meta: { healthy: true } }
 	];
 
 	// date
@@ -62,8 +66,6 @@
 			goto('/change');
 		});
 	};
-
-
 </script>
 
 <div>
@@ -78,7 +80,9 @@
 				</RadioGroup>
 				<div class="flex gap-4">
 					<RowsPerPage {handler} />
-					<a class="btn variant-filled-primary" href="change/new"
+					<a
+						class="btn variant-filled-primary"
+						href={dir_bool ? 'change/new-income' : 'change/new-expense'}
 						>Nový {dir_bool ? 'příjem' : 'výdaj'}</a
 					>
 				</div>
@@ -104,15 +108,15 @@
 					{#each $rows as row}
 						<tr on:click={() => handleEditClick(row.id)} class="cursor-pointer">
 							<td>{row.type.name}</td>
-                            <td>{row.amount} Kč</td>
-                            <td>
-                                <Dateformatter date_string={row.from} />
-                            </td>
-                            <td>
-                                <Dateformatter date_string={row.to} />
-                            </td>
-                            <td>{row.frequency}</td>
-                            <!-- todo fix type missing in page data -->
+							<td>{row.amount} Kč</td>
+							<td>
+								<Dateformatter date_string={row.from} />
+							</td>
+							<td>
+								<Dateformatter date_string={row.to} />
+							</td>
+							<td>{row.frequency}</td>
+							<!-- todo fix type missing in page data -->
 						</tr>
 					{/each}
 				</tbody>

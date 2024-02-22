@@ -1,4 +1,4 @@
-,bic,isin,kurz,min,max,Negativní scénář (růstová míra %),Neutrální scénář (růstová míra %),Pozitivní scénář (růstová míra %)
+name,bic,isin,kurz,min,max,negative,neutral,positive
 ATOMTRACE,BAAATOMT,CZ0009004792,42,15,220,-80.12,-7.95,64.88
 PILULKA LÉKÁRNY,BAAPILLE,CZ0009009874,228,197,685,-67.78,-25.64,14.50
 PRIMOCO UAV SE,BAAPRIUA,CZ0005135970,1070,382,1250,-12.53,24.56,63.10

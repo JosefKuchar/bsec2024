@@ -81,6 +81,24 @@ async function main() {
 				typeId : 2
 			}
 		});
+
+		await prisma.investmentChange.create({
+			data: {
+				type: 1,
+				investmentId : 1,
+				amount : 15,
+				frequency : 1,
+			}
+		});
+
+		await prisma.investmentChange.create({
+			data: {
+				type: 1,
+				investmentId : 10,
+				amount : 10,
+				frequency : 2,
+			}
+		});
 	}
 
 

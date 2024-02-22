@@ -12,10 +12,14 @@
 	import Dateformatter from '$lib/dateformatter.svelte';
 	import { Frequency } from '$lib/enums';
 	import { Autocomplete } from '@skeletonlabs/skeleton';
-	import { getTodayFormatted } from '$lib/utils';
+	import { getFrequencyString, getTodayFormatted } from '$lib/utils';
 	import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
-	let date_now = getTodayFormatted();
+
+    let date_now = getTodayFormatted();
+
+    $: console.log('minDate', date_now);
+
 	export let data: PageData;
 	const incomes_handler = new DataHandler(data.incomes, { rowsPerPage: 10 });
 	const expenses_handler = new DataHandler(data.expenses, { rowsPerPage: 10 });
@@ -26,9 +30,44 @@
 	const handleEditClick = (stockId: number) => {
 		goto(`/change/${stockId}`);
 	};
+
+
+	let inputPopupDemo: string = '';
+
+	function onPopupDemoSelect(event: CustomEvent<AutocompleteOption<string>>): void {
+		inputPopupDemo = event.detail.label;
+	}
+
+	const flavorOptions: AutocompleteOption<string>[] = [
+	{ label: 'Vanilla', value: 'vanilla', keywords: 'plain, basic', meta: { healthy: false } },
+	{ label: 'Chocolate', value: 'chocolate', keywords: 'dark, white', meta: { healthy: false } },
+	{ label: 'Strawberry', value: 'strawberry', keywords: 'fruit', meta: { healthy: true } },
+	{ label: 'Neapolitan', value: 'neapolitan', keywords: 'mix, strawberry, chocolate, vanilla', meta: { healthy: false } },
+	{ label: 'Pineapple', value: 'pineapple', keywords: 'fruit', meta: { healthy: true } },
+	{ label: 'Peach', value: 'peach', keywords: 'fruit', meta: { healthy: true } }
+	];
+
+	// date
+	let selectedDate = getTodayFormatted();
+
+	const handleSubmit = (e: Event) => {
+		e.preventDefault();
+		fetch(`/api/change/add`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(formdata)
+		}).then(() => {
+			goto('/change');
+		});
+	};
+
+
 </script>
 
 <div>
+	<h1 class="h1 my-5">{dir_bool ? 'Příjmy' : 'Výdaje'}</h1>
 	<main>
 		<div class="table-container space-y-4">
 			<header class="flex justify-between gap-4">
@@ -37,7 +76,12 @@
 					<RadioItem bind:group={dir_bool} name="justify" value={true}>Příjmy</RadioItem>
 					<RadioItem bind:group={dir_bool} name="justify" value={false}>Výdaje</RadioItem>
 				</RadioGroup>
-				<RowsPerPage {handler} />
+				<div class="flex gap-4">
+					<RowsPerPage {handler} />
+					<a class="btn variant-filled-primary" href="change/new"
+						>Nový {dir_bool ? 'příjem' : 'výdaj'}</a
+					>
+				</div>
 			</header>
 			<table class="table table-hover table-compact table-auto w-full">
 				<thead>
@@ -58,17 +102,17 @@
 				</thead>
 				<tbody>
 					{#each $rows as row}
-						<tr on:click={() => handleEditClick(row.id)}>
+						<tr on:click={() => handleEditClick(row.id)} class="cursor-pointer">
 							<td>{row.type.name}</td>
-							<td>{row.amount} Kč</td>
-							<td>
-								<Dateformatter date_string={row.from} />
-							</td>
-							<td>
-								<Dateformatter date_string={row.to} />
-							</td>
-							<td>{row.frequency}</td>
-							<!-- todo fix type missing in page data -->
+                            <td>{row.amount} Kč</td>
+                            <td>
+                                <Dateformatter date_string={row.from} />
+                            </td>
+                            <td>
+                                <Dateformatter date_string={row.to} />
+                            </td>
+                            <td>{row.frequency}</td>
+                            <!-- todo fix type missing in page data -->
 						</tr>
 					{/each}
 				</tbody>

@@ -58,7 +58,7 @@
             <DonutChart class="" {data} {options} />
         </div>
     </div>
-    <div class="bg-black w-2/3 h-full">
+    <div class="bg-black w-2/3">
         <slot/>
 
     </div>

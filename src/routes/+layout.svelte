@@ -13,7 +13,7 @@
 		<PageHeader/>
 	</svelte:fragment>
 	<svelte:fragment>
-		<div class="mx-10">
+		<div class="mx-10 h-full">
 			<slot />
 		</div>
 	</svelte:fragment>

@@ -4,7 +4,7 @@
 </script>
 
 <div class="h-full mx-auto flex justify-center">
-	<div class="flex-col w-4/5">
+	<div class="flex-col w-full">
 		<div class="text-3xl font-semibold">Můj účet</div>
 		<MainFrame>
 			Slot 

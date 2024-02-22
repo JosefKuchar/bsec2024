@@ -27,7 +27,8 @@
 		<MainFrame>
 			Slot 
 		</MainFrame>
-		<div class="table-container space-y-4 mt-10">
+		<h2 class="h2 mt-10 mb-5">Pohyby</h2>
+		<div class="table-container space-y-4">
 			<header class="flex justify-between gap-4">
 				<Search {handler}/>
 				<div class="flex gap-4">

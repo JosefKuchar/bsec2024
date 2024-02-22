@@ -12,11 +12,13 @@
     import Dateformatter from '$lib/dateformatter.svelte';
 	import { DataHandler } from '@vincjo/datatables';
 	import type { PageData } from "./$types";
+	import { Dir } from "$lib/enums";
 
 	export let data : PageData;
 
 	const handler = new DataHandler(data.transactions, { rowsPerPage: 10 });
 	const rows = handler.getRows();
+
 </script>
 
 <div class="h-full w-full mx-auto flex justify-center">
@@ -40,27 +42,24 @@
 					<tr>
 						<ThSort {handler} orderBy="name">Název</ThSort>
 						<ThSort {handler} orderBy="amount">Částka</ThSort>
-						<ThSort {handler} orderBy="from">Od</ThSort>
-						<ThSort {handler} orderBy="to">Do</ThSort>
-						<ThSort {handler} orderBy="frequency">Frekvence</ThSort>
+						<ThSort {handler} orderBy="from">Datum</ThSort>
 					</tr>
 					<tr>
 						<ThFilter {handler} filterBy="name" />
 						<ThFilter {handler} filterBy="amount" />
-						<ThFilter {handler} filterBy="from" />
-						<ThFilter {handler} filterBy="to" />
-						<ThFilter {handler} filterBy="frequency" />
+						<ThFilter {handler} filterBy="date" />
 					</tr>
 				</thead>
 				<tbody>
 					{#each $rows as row}
 						<tr class="cursor-pointer">
-							<td>{row.type}</td>
 							<td>{row.name}</td>
-                            <td>{row.amount} Kč</td>
-                            <td>
-                                <Dateformatter date_string={row.date} />
-                            </td>
+							<td class={`${row.type == Dir.Incomes? 'text-success-500' : 'text-error-500'}`}>
+								{#if row.type == Dir.Incomes}
+									+{:else}
+									-{/if}{row.amount} Kč</td>
+                            <td><Dateformatter date_string={row.date}/></td>
+
                             <!-- todo fix type missing in page data -->
 						</tr>
 					{/each}

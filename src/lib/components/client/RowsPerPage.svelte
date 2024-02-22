@@ -6,7 +6,7 @@
 </script>
 
 <aside class="flex place-items-center">
-	Show
+	Zobrazit:
 	<select class="select ml-2" bind:value={$rowsPerPage}>
 		{#each options as option}
 			<option value={option}>

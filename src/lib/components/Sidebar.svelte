@@ -8,7 +8,7 @@
 
 </script>
 
-<AppRail>
+<AppRail background="bg-surface-800">
 	<AppRailTile bind:group={currentTile} name="tile-1" value={0} title="tile-1">
 		<svelte:fragment slot="lead">
             <div class="flex items-center justify-center">

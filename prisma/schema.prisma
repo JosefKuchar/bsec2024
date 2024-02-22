@@ -35,6 +35,7 @@ model Change {
   amount    Int
   from      DateTime
   to        DateTime
+  dir       Int
   frequency Int
   typeId    Int
   type      ChangeType @relation(fields: [typeId], references: [id])

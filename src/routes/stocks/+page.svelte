@@ -20,6 +20,7 @@
 </script>
 
 <div>
+	<h1 class="h1 my-5">Investice</h1>
 	<main>
 		<div class="table-container space-y-4">
 			<header class="flex justify-between gap-4">

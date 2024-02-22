@@ -11,18 +11,3 @@ export enum Frequency {
     Yearly = 5,
 
 }
-
-export function frequencyToString(freq: Frequency): string {
-    switch(freq){
-        case Frequency.OneTime:
-            return "Jednorázově";
-        case Frequency.Daily:
-            return "Denně";
-        case Frequency.Weekly:
-            return "Týdně";
-        case Frequency.Monthly:
-            return "Měsíčně";
-        case Frequency.Yearly:
-            return "Ročně";
-    }
-}

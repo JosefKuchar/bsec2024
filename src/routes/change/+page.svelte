@@ -15,7 +15,6 @@
 	import { getFrequencyString, getTodayFormatted } from '$lib/utils';
 	import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
-	import {frequencyToString} from '$lib/enums';
 
     let date_now = getTodayFormatted();
 
@@ -31,9 +30,6 @@
 	const handleEditClick = (stockId: number) => {
 		goto(`/change/${stockId}`);
 	};
-
-    $: handler = dir_bool ? incomes_handler : expenses_handler;
-    $: rows = handler.getRows();
 
 
 	let inputPopupDemo: string = '';
@@ -115,7 +111,7 @@
                             <td>
                                 <Dateformatter date_string={row.to} />
                             </td>
-                            <td>{frequencyToString(row.frequency)}</td>
+                            <td>{row.frequency}</td>
                             <!-- todo fix type missing in page data -->
 						</tr>
 					{/each}

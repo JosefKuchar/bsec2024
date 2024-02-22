@@ -28,15 +28,25 @@ async function main() {
 
 		await prisma.changeType.create({
 			data: {
-				name: "Důchod"
+				name: "Důchod",
+				dir: 2
 			}
 		});
 
 		await prisma.changeType.create({
 			data: {
-				name: "Práce"
+				name: "Práce",
+				dir: 1
 			}
 		});
+
+		await prisma.changeType.create({
+			data: {
+				name: "Jídlo",
+				dir: 2
+			}
+		});
+
 
 		//  hardocoded data
 		await prisma.change.create({

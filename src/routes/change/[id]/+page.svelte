@@ -4,22 +4,32 @@
 	import type { PageData } from './$types';
 	import { Frequency } from '$lib/enums';
 	import { getTodayFormatted } from '$lib/utils';
+	import { Autocomplete } from '@skeletonlabs/skeleton';
+	import type { AutocompleteOption } from '@skeletonlabs/skeleton';
+
 	export let data: PageData;
 
 	const handleSubmit = (e: Event) => {
 		e.preventDefault();
-		fetch(`/api/change/add`, {
+		fetch(`/api/change/new`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(data)
+			body: JSON.stringify(data.data)
 		}).then(() => {
 			goto('/change');
 		});
 	};
 
+	let inputType = '';
+
 	let date_now = getTodayFormatted();
+
+	function onFlavorSelection(event: CustomEvent<AutocompleteOption<string>>): void {
+		inputType = event.detail.label;
+		data.data.typeId = Number(event.detail.value);
+	}
 </script>
 
 <div>
@@ -41,6 +51,15 @@
 			/>
 		</div> -->
 	<!-- input suma -->
+	<input class="input" type="search" name="demo" bind:value={inputType} placeholder="Search..." />
+	<div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1">
+		<Autocomplete
+			bind:input={inputType}
+			options={data.changeTypes}
+			on:selection={onFlavorSelection}
+		/>
+	</div>
+
 	<input class="input" type="number" placeholder="Suma" bind:value={data.data.amount} />
 
 	<RadioGroup>

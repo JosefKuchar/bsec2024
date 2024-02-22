@@ -6,20 +6,17 @@ export const load = (async ({ params }) => {
 		return {
 			data: {
 				id: 0,
-				name: '',
-				bic: '',
-				isin: '',
-				rate: null,
-				min: null,
-				max: null,
-				negative: null,
-				positive: null,
-				neutral: null
+				amount: null,
+				from: null,
+				to: null,
+				dir: null,
+				frequency: null,
+				typeId: null
 			}
 		};
 	}
 
-	const response = await prisma.investment.findFirst({
+	const response = await prisma.change.findFirst({
 		where: {
 			id: parseInt(params.id)
 		}

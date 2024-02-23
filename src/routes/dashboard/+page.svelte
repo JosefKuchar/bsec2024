@@ -82,7 +82,8 @@
 						currentChange += amount;
 					}
 				} else {
-					if (now.isSameOrAfter(dateFrom, 'day') && dateTo.isSameOrBefore(now, 'day')) {
+					if (now.isBetween(dateFrom, dateTo, 'day')) {
+						console.log(dateFrom.diff(now, 'days'), frequencyToDays(change.frequency));
 						// Check if we hit interval
 						if (dateFrom.diff(now, 'days') % frequencyToDays(change.frequency) === 0) {
 							currentChange += amount;
@@ -101,7 +102,7 @@
 						currentChange -= change.amount;
 					}
 				} else {
-					if (now.isSameOrAfter(dateFrom, 'day') && dateTo.isSameOrBefore(now, 'day')) {
+					if (now.isBetween(dateFrom, dateTo, 'day')) {
 						// Check if we hit interval
 						console.log('diff', now.diff(dateFrom, 'days'), frequencyToDays(change.frequency));
 						if (dateFrom.diff(now, 'days') % frequencyToDays(change.frequency) === 0) {

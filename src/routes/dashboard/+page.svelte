@@ -132,10 +132,12 @@
 			});
 
 			// Save current day
-			values.push(
-				{ group: 'Investice', date: now.toISOString(), value },
-				{ group: 'Volné prostředky', date: now.toISOString(), value: currentChange }
-			);
+			if (i % Math.max(1, Math.floor(duration / 100)) === 0) {
+				values.push(
+					{ group: 'Investice', date: now.toISOString(), value },
+					{ group: 'Volné prostředky', date: now.toISOString(), value: currentChange }
+				);
+			}
 
 			// Update rates for next day
 			data.investments.forEach((investment) => {
@@ -156,7 +158,6 @@
 		}
 		graphValues = values;
 	}
-
 </script>
 
 <div>
@@ -178,21 +179,11 @@
 					>
 				</RadioGroup>
 				<RadioGroup>
-					<RadioItem bind:group={interval} name="justify" value={1}
-						>Měsíc</RadioItem
-					>
-					<RadioItem bind:group={interval} name="justify" value={2}
-						>Rok</RadioItem
-					>
-					<RadioItem bind:group={interval} name="justify" value={3}
-						>5 let</RadioItem
-					>
-						<RadioItem bind:group={interval} name="justify" value={4}
-						>10 let</RadioItem
-					>
-						<RadioItem bind:group={interval} name="justify" value={5}
-						>20 let</RadioItem
-					>
+					<RadioItem bind:group={interval} name="justify" value={1}>Měsíc</RadioItem>
+					<RadioItem bind:group={interval} name="justify" value={2}>Rok</RadioItem>
+					<RadioItem bind:group={interval} name="justify" value={3}>5 let</RadioItem>
+					<RadioItem bind:group={interval} name="justify" value={4}>10 let</RadioItem>
+					<RadioItem bind:group={interval} name="justify" value={5}>20 let</RadioItem>
 				</RadioGroup>
 			</div>
 		</div>

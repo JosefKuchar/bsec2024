@@ -8,10 +8,16 @@
 	import { DataHandler } from '@vincjo/datatables';
 	import type { PageData } from './$types';
 	import AmountColor from '$lib/components/AmountColor.svelte';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 	const handler = new DataHandler(data.investmentChange, { rowsPerPage: 10 });
 	const rows = handler.getRows();
+
+	const handleEditClick = (investmentId: number) => {
+		console.log('investmentId', investmentId);
+		goto(`/investments/${investmentId}`);
+	};
 
 </script>
 
@@ -21,7 +27,10 @@
 		<div class="table-container space-y-4">
 			<header class="flex justify-between gap-4">
 				<Search {handler} />
-				<RowsPerPage {handler} />
+				<div class="flex gap-4">
+					<RowsPerPage {handler} />
+					<a class="btn variant-filled-primary" href="/stocks">Nová investice</a>
+				</div>
 			</header>
 			<table class="table table-hover table-compact table-auto w-full">
 				<thead>
@@ -44,7 +53,7 @@
 				</thead>
 				<tbody>
 					{#each $rows as row}
-						<tr class="cursor-pointer">
+						<tr on:click={() => handleEditClick(row.id)} class="cursor-pointer">
 							<td>{row.investment.name}</td>
 							<td>{row.investment.bic}</td>
 							<td>{row.frequency}</td>

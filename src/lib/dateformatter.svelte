@@ -7,4 +7,4 @@
     import Time from "svelte-time";
 </script>
 
-<Time timestamp ={date_string} format="DD.MM.YYYY HH:MM:ss" />
+<Time timestamp ={date_string} format="DD.MM.YYYY" />

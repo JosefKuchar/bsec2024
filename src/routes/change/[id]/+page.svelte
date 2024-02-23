@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { RadioGroup, RadioItem, popup } from '@skeletonlabs/skeleton';
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import type { PageData } from './$types';
 	import { Frequency } from '$lib/enums';
 	import { getTodayFormatted } from '$lib/utils';
@@ -76,20 +76,34 @@
 		modalbool = true;
 	}
 
-	function mycustomfn(data: string) {
-		console.log('mycustomfn', data);
+	function mycustomfn(typename: string) {
+		console.log('mycustomfn', typename);
 		modalbool = false;
 		console.log('modalbool', modalbool);
+		if (typename == 'false' || data == null || typename == 0) {
+			return;
+		}
+		fetch(`/api/change/addtype`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({name: typename, dir: data.data.dir})
+			}).then(() => {
+				invalidateAll();
+			});
 	}
 
 
 	const modal: ModalSettings = {
 	type: 'prompt',
 	// Data
-	title: 'Enter Name',
-	body: 'Provide your first name in the field below.',
+	title: 'Název typu',
 	// Populates the input value and attributes
-	value: 'Skeleton',
+	value: '',
+	buttonTextCancel: 'Zrušit',
+	/** Override the Confirm button label. */
+	buttonTextSubmit: 'Uložit',
 	valueAttr: { type: 'text', minlength: 3, maxlength: 10, required: true},
 	// Returns the updated response value
 	meta : {fn: mycustomfn},

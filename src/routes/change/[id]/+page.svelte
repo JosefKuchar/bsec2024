@@ -22,9 +22,13 @@
 		});
 	};
 
-	let inputType = '';
+	let inputType  = data.changeTypes.find((type) => Number(type.value) === data.data.typeId)?.label;
 
 	let date_now = getTodayFormatted();
+
+	console.log(data.data.from);
+
+	console.log(data.data.to);
 
 	function onFlavorSelection(event: CustomEvent<AutocompleteOption<string>>): void {
 		inputType = event.detail.label;
@@ -35,23 +39,6 @@
 </script>
 
 <div>
-	<!-- pridavani polozky , dropdown typ, suma, radio item frekvence, datepicker od/do -->
-	<!-- typ autocomplete -->
-	<!-- <input
-			class="input autocomplete"
-			type="search"
-			name="autocomplete-search"
-			bind:value={data.data..type}
-			placeholder="Search..."
-			use:popup={popupSettings}
-		/>
-		<div data-popup="popupAutocomplete">
-			<Autocomplete
-				bind:input={data.data..type}
-				options={flavorOptions}
-				on:selection={onPopupDemoSelect}
-			/>
-		</div> -->
 	<!-- input suma -->
 	<input class="input" type="search" name="demo" bind:value={inputType} placeholder="Search..." />
 	<div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1">
@@ -86,7 +73,6 @@
 			title="Input (date)"
 			type="date"
 			bind:value={data.data.from}
-			min={date_now}
 		/>
 	{:else}
 		<input
@@ -94,7 +80,6 @@
 			title="Input (date)"
 			type="date"
 			bind:value={data.data.from}
-			min={date_now}
 		/>
 
 		<input
@@ -102,8 +87,7 @@
 			title="Input (date)"
 			type="date"
 			bind:value={data.data.to}
-			min={date_now}
 		/>
 	{/if}
-	<button type="button" class="btn variant-filled" on:click={handleSubmit}>Přidat</button>
+	<button type="button" class="btn variant-filled" on:click={handleSubmit}>Uložit</button>
 </div>

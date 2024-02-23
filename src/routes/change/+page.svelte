@@ -74,7 +74,11 @@
 							<td>{row.type}</td>
 							<td>{row.amount} Kč</td>
 							<td>{row.from}</td>
+							{#if row.frequency == 'Jednorázově'}
+							<td><span class="font-bold">-</span></td>
+							{:else}
 							<td>{row.to}</td>
+							{/if}
 							<td>{row.frequency}</td>
 						</tr>
 					{/each}

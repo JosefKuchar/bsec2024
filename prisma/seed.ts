@@ -88,6 +88,8 @@ async function main() {
 				investmentId : 1,
 				amount : 15,
 				frequency : 1,
+				from: new Date(),
+				to: new Date()
 			}
 		});
 
@@ -97,6 +99,8 @@ async function main() {
 				investmentId : 10,
 				amount : 10,
 				frequency : 2,
+				from: new Date(),
+				to: new Date()
 			}
 		});
 	}

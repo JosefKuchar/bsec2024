@@ -30,7 +30,7 @@
 		}
 	};
 
-	let data = [
+	$: data = [
 		{
 			group: 'Volné prostředky',
 			value: changeValue
@@ -40,28 +40,7 @@
 			value: investmentValue
 		}
 	];
-
-	let count = 0;
-	$: target = investmentValue + changeValue; // Final number
-	const duration = 6000; // Duration of the animation in milliseconds
-	let interval = duration / target; // Calculate interval time
-
-	onMount(() => {
-		const counter = setInterval(() => {
-			if (count < target) {
-				// Calculate the increment to make the animation smooth
-				// This calculation can be adjusted based on the animation's desired speed and smoothness
-				let increment = Math.ceil(target / (duration / 100));
-
-				count += increment;
-				if (count > target) {
-					count = target; // Ensure it doesn't go over the target
-				}
-			} else {
-				clearInterval(counter);
-			}
-		}, interval);
-	});
+	$: target = investmentValue + changeValue;
 </script>
 
 <div class="mt-10 bg-surface-700 h-2/5 flex rounded-3xl overflow-hidden">
@@ -72,7 +51,7 @@
 	</div>
 	<div class="bg-surface-700 w-2/3 h-full flex p-10 justify-center items-center">
 		<div class="bg-surface-700 h-full w-full">
-			<h1 class="text-center h1">{count} Kč</h1>
+			<h1 class="text-center h1">{target} Kč</h1>
 			<p class="text-center">hodnota portfolia</p>
 			<div class="w-full h-full flex justify-center mt-12">
 				<div class="items-center w-2/5">

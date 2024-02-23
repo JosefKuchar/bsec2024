@@ -8,7 +8,13 @@
 	import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
+	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
+	import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
+	import { initializeStores } from '@skeletonlabs/skeleton';
 
+	initializeStores();
+
+	const modalStore = getModalStore();
 
 	export let data: PageData;
 
@@ -62,17 +68,49 @@
 		data.data.typeId = Number(event.detail.value);
 	}
 
+	let modalbool = false;
+
+	function openModal() {
+		modalStore.trigger(modal);
+		console.log('openModal', modalbool);
+		modalbool = true;
+	}
+
+	function mycustomfn(data: string) {
+		console.log('mycustomfn', data);
+		modalbool = false;
+		console.log('modalbool', modalbool);
+	}
+
+
+	const modal: ModalSettings = {
+	type: 'prompt',
+	// Data
+	title: 'Enter Name',
+	body: 'Provide your first name in the field below.',
+	// Populates the input value and attributes
+	value: 'Skeleton',
+	valueAttr: { type: 'text', minlength: 3, maxlength: 10, required: true},
+	// Returns the updated response value
+	meta : {fn: mycustomfn},
+	response: (r: string) => mycustomfn(r),
+	};
+	modalStore.trigger(modal);
+
+
 
 	$: filteredTypes = data.changeTypes.filter((type) => type.dir === data.data.dir);
 </script>
-
+{#if modalbool}
+	<Modal bind:store={$modalStore} />
+{/if}
 <div class="grid grid-cols-1 bg-clip-padding">
 	<div class="flex items-center">
 		<div>
 		<span class="text-lg font-bold">Typ</span>
 		</div>
 		<div class="px-12">
-			<button type="button" class="btn variant-filled-primary" on:click={o}>přidat typ</button>
+			<button type="button" class="btn variant-filled-primary" on:click={openModal}>přidat typ</button>
 		</div>
 	</div>
 	<div class="py-8">

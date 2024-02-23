@@ -28,14 +28,21 @@ async function main() {
 
 		await prisma.changeType.create({
 			data: {
-				name: "Důchod",
+				name: "Nájem",
 				dir: 2
 			}
 		});
 
 		await prisma.changeType.create({
 			data: {
-				name: "Práce",
+				name: "Hypotéka",
+				dir: 2
+			}
+		});
+
+		await prisma.changeType.create({
+			data: {
+				name: "Mzda",
 				dir: 1
 			}
 		});
@@ -44,63 +51,6 @@ async function main() {
 			data: {
 				name: "Jídlo",
 				dir: 2
-			}
-		});
-
-
-		//  hardocoded data
-		await prisma.change.create({
-			data: {
-				amount : 1,
-				from : new Date(),
-				to : new Date(),
-				dir : 1,
-				frequency : 1,
-				typeId : 1
-			}
-		});
-
-		await prisma.change.create({
-			data: {
-				amount : 1,
-				from : new Date(),
-				to : new Date(),
-				dir : 1,
-				frequency : 1,
-				typeId : 2
-			}
-		});
-
-		await prisma.change.create({
-			data: {
-				amount : 1,
-				from : new Date(),
-				to : new Date(),
-				dir : 2,
-				frequency : 1,
-				typeId : 2
-			}
-		});
-
-		await prisma.investmentChange.create({
-			data: {
-				type: 1,
-				investmentId : 1,
-				amount : 15,
-				frequency : 1,
-				from: new Date(),
-				to: new Date()
-			}
-		});
-
-		await prisma.investmentChange.create({
-			data: {
-				type: 1,
-				investmentId : 10,
-				amount : 10,
-				frequency : 2,
-				from: new Date(),
-				to: new Date()
 			}
 		});
 	}

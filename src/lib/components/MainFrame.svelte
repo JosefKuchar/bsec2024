@@ -30,6 +30,11 @@
 		}
 	};
 
+	function formatNumberWithSpaces(number) {
+  		return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(number).replace(/,/g, ' ');
+	}
+
+
 	$: data = [
 		{
 			group: 'Volné prostředky',
@@ -51,18 +56,18 @@
 	</div>
 	<div class="bg-surface-700 w-2/3 h-full flex p-10 justify-center items-center">
 		<div class="bg-surface-700 h-full w-full">
-			<h1 class="text-center h1">{target} Kč</h1>
+			<h1 class="text-center h1">{formatNumberWithSpaces(target)} Kč</h1>
 			<p class="text-center">hodnota portfolia</p>
 			<div class="w-full h-full flex justify-center mt-12">
 				<div class="items-center w-2/5">
 					<div class="items-center w-full">
 						<div class="flex items-center">
 							<p class="flex-col w-1/2 text-start">Volné prostředky</p>
-							<p class="flex-col h4 w-1/2 text-end">{changeValue} Kč</p>
+							<p class="flex-col h4 w-1/2 text-end">{formatNumberWithSpaces(changeValue)} Kč</p>
 						</div>
 						<div class="flex items-center">
 							<p class="flex-col w-1/2 text-start">Investováno</p>
-							<p class="flex-col h4 w-1/2 text-end">{investmentValue} Kč</p>
+							<p class="flex-col h4 w-1/2 text-end">{formatNumberWithSpaces(investmentValue)} Kč</p>
 						</div>
 					</div>
 				</div>

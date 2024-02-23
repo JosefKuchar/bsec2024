@@ -31,9 +31,10 @@
 	};
 
 	function formatNumberWithSpaces(number) {
-  		return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(number).replace(/,/g, ' ');
+		return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 })
+			.format(number)
+			.replace(/,/g, ' ');
 	}
-
 
 	$: data = [
 		{
@@ -48,7 +49,7 @@
 	$: target = investmentValue + changeValue;
 </script>
 
-<div class="mt-10 bg-surface-700 h-2/5 flex rounded-3xl overflow-hidden">
+<div class="mt-10 bg-surface-700 h-3/5 flex rounded-3xl overflow-hidden">
 	<div class=" w-1/3 h-full flex justify-center items-center">
 		<div class="w-full h-4/5">
 			<DonutChart style="color:white" {data} {options} />

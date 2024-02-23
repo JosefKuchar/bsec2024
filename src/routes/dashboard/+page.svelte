@@ -25,7 +25,8 @@
 			},
 			bottom: {
 				scaleType: 'time',
-				mapsTo: 'date'
+				mapsTo: 'date',
+				title: 'Datum'
 			}
 		},
 		curve: 'curveMonotoneX',
@@ -52,8 +53,6 @@
 	};
 
 	onMount(() => {
-		console.log(data);
-
 		let stocks: { [key: number]: number } = {};
 		data.investments.forEach((investment) => {
 			stocks[investment.id] = investment.rate;
@@ -83,7 +82,6 @@
 					}
 				} else {
 					if (now.isBetween(dateFrom, dateTo, 'day')) {
-						console.log(dateFrom.diff(now, 'days'), frequencyToDays(change.frequency));
 						// Check if we hit interval
 						if (dateFrom.diff(now, 'days') % frequencyToDays(change.frequency) === 0) {
 							currentChange += amount;
@@ -104,9 +102,7 @@
 				} else {
 					if (now.isBetween(dateFrom, dateTo, 'day')) {
 						// Check if we hit interval
-						console.log('diff', now.diff(dateFrom, 'days'), frequencyToDays(change.frequency));
 						if (dateFrom.diff(now, 'days') % frequencyToDays(change.frequency) === 0) {
-							console.log('hit', now);
 							investments[change.investmentId] += change.amount / stocks[change.id];
 							currentChange -= change.amount;
 						}

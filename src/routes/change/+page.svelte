@@ -76,7 +76,6 @@
 							<td>{row.from}</td>
 							<td>{row.to}</td>
 							<td>{row.frequency}</td>
-							<!-- todo fix type missing in page data -->
 						</tr>
 					{/each}
 				</tbody>

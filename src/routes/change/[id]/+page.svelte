@@ -171,6 +171,7 @@
 				title="Input (date)"
 				type="date"
 				bind:value={data.data.from}
+				min={date_now}
 			/>
 		{:else}
 			<input
@@ -178,6 +179,7 @@
 				title="Input (date)"
 				type="date"
 				bind:value={data.data.from}
+				min={date_now}
 			/>
 			<div>
 				<span class="text-lg font-bold">Do</span>
@@ -187,6 +189,7 @@
 				title="Input (date)"
 				type="date"
 				bind:value={data.data.to}
+				min={date_now}
 			/>
 		{/if}
 	</div>

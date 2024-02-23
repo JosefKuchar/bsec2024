@@ -1,38 +1,36 @@
-# create-svelte
+# 📈 BSEC 2024 - Modelace Investovaní
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Projekt byl vytvořen v rámci hackathonu za asi 16 hodin čistého času (https://best-bsec.cz/)
 
-## Creating a project
+S tímto řešením jsme se jako tým umístili na 🥇 místě. Celé zadání [zde](data/Modelace_investovani_v2.pdf)
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Prerekvizity
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+`node >= 18`
 
-# create a new project in my-app
-npm create svelte@latest my-app
+## Instalace a spuštění
+
 ```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
+npm i
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+## Screenshoty
 
-To create a production version of your app:
+![1](_imgs/1.png)
+![2](_imgs/2.png)
+![3](_imgs/3.png)
+![4](_imgs/4.png)
+![5](_imgs/5.png)
+![6](_imgs/6.png)
+![7](_imgs/7.png)
 
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## Použité technologie
+- Typescript
+- SvelteKit
+- SkeletonUI
+- TailwindCSS
+- Line Awesome
+- Carbon Charts
+- PrismaORM
+- SQLite

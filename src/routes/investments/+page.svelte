@@ -56,16 +56,16 @@
 				<tbody>
 					{#each $rows as row}
 						<tr on:click={() => handleEditClick(row.id)} class="cursor-pointer">
-							<td>{row.investment.name}</td>
-							<td>{row.investment.bic}</td>
+							<td>{row.name}</td>
+							<td>{row.bic}</td>
 							<td>{row.frequency}</td>
 							<td>
-								<Dateformatter date_string={row.from} />
+								{row.from}
 							</td>
 							{#if row.frequency == 'Jednorázově'}
 							<td><span class="font-bold">-</span></td>
 							{:else}
-							<td><Dateformatter date_string={row.to} /></td>
+							<td>{row.to}</td>
 							{/if}
 							<td>{row.amount} Kč</td>
 						</tr>

@@ -9,6 +9,7 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 
+
 	export let data: PageData;
 
 	const handleSubmit = (e: Event) => {
@@ -61,12 +62,18 @@
 		data.data.typeId = Number(event.detail.value);
 	}
 
+
 	$: filteredTypes = data.changeTypes.filter((type) => type.dir === data.data.dir);
 </script>
 
-<div class="felx col-auto bg-clip-padding">
-	<div>
+<div class="grid grid-cols-1 bg-clip-padding">
+	<div class="flex items-center">
+		<div>
 		<span class="text-lg font-bold">Typ</span>
+		</div>
+		<div class="px-12">
+			<button type="button" class="btn variant-filled-primary" on:click={o}>přidat typ</button>
+		</div>
 	</div>
 	<div class="py-8">
 		<input class="input" type="search" name="autocomplete-search" bind:value={inputType} placeholder="Search..." use:popup={popupSettings} />
@@ -91,10 +98,10 @@
 			<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Daily}
 				>Denně</RadioItem
 			>
-			<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Monthly}
+			<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Weekly}
 				>Týdně</RadioItem
 			>
-			<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Weekly}
+			<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Monthly}
 				>Měsíčně</RadioItem
 			>
 			<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Yearly}
@@ -133,9 +140,9 @@
 	</div>
 	<div class="py-4">
 		{#if is_create}
-			<button type="button" class="btn variant-filled" on:click={handleSubmit}>Vytvořit</button>
+			<button type="button" class="btn variant-filled-primary" on:click={handleSubmit}>Vytvořit</button>
 		{:else}
-			<button type="button" class="btn variant-filled" on:click={handleSubmit}>Uložit</button>
+			<button type="button" class="btn variant-filled-primary" on:click={handleSubmit}>Uložit</button>
 		{/if}
 	</div>
 </div>

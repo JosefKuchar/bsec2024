@@ -52,13 +52,15 @@
 	};
 
 	onMount(() => {
+		console.log(data);
+
 		let stocks: { [key: number]: number } = {};
 		data.investments.forEach((investment) => {
 			stocks[investment.id] = investment.rate;
 		});
 		let investments: { [key: number]: number } = {};
 		data.investmentChange.forEach((change) => {
-			investments[change.id] = 0;
+			investments[change.investmentId] = 0;
 		});
 
 		let now = moment();
@@ -67,7 +69,7 @@
 			date: string;
 			value: number;
 		}[] = [];
-		let duration = 365;
+		let duration = 100;
 		let currentChange = 0;
 
 		for (let i = 0; i < duration; i++) {
@@ -80,9 +82,9 @@
 						currentChange += amount;
 					}
 				} else {
-					if (dateFrom.isAfter(now, 'day') && now.isBefore(dateTo, 'day')) {
+					if (now.isSameOrAfter(dateFrom, 'day') && dateTo.isSameOrBefore(now, 'day')) {
 						// Check if we hit interval
-						if (now.diff(dateFrom, 'days') % frequencyToDays(change.frequency) === 0) {
+						if (dateFrom.diff(now, 'days') % frequencyToDays(change.frequency) === 0) {
 							currentChange += amount;
 						}
 					}
@@ -95,13 +97,17 @@
 				const dateTo = moment(change.to);
 				if (change.frequency === Frequency.OneTime) {
 					if (dateFrom.isSame(now, 'day')) {
-						investments[change.id] += change.amount / stocks[change.id];
+						investments[change.investmentId] += change.amount / stocks[change.id];
+						currentChange -= change.amount;
 					}
 				} else {
-					if (dateFrom.isAfter(now, 'day') && now.isBefore(dateTo, 'day')) {
+					if (now.isSameOrAfter(dateFrom, 'day') && dateTo.isSameOrBefore(now, 'day')) {
 						// Check if we hit interval
-						if (now.diff(dateFrom, 'days') % frequencyToDays(change.frequency) === 0) {
-							investments[change.id] += change.amount / stocks[change.id];
+						console.log('diff', now.diff(dateFrom, 'days'), frequencyToDays(change.frequency));
+						if (dateFrom.diff(now, 'days') % frequencyToDays(change.frequency) === 0) {
+							console.log('hit', now);
+							investments[change.investmentId] += change.amount / stocks[change.id];
+							currentChange -= change.amount;
 						}
 					}
 				}
@@ -136,6 +142,6 @@
 {#if graphValues.length === 0}
 	<p>Načítám data...</p>
 {:else}
-	<ComboChart style="background:transparent" data={graphValues} {options} />
+	<ComboChart data={graphValues} {options} />
 {/if}
 <div class="p-10"></div>

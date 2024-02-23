@@ -62,9 +62,11 @@
 							<td>
 								<Dateformatter date_string={row.from} />
 							</td>
-							<td>
-								<Dateformatter date_string={row.to} />
-							</td>
+							{#if row.frequency == 'Jednorázově'}
+							<td><span class="font-bold">-</span></td>
+							{:else}
+							<td><Dateformatter date_string={row.to} /></td>
+							{/if}
 							<td>{row.amount} Kč</td>
 						</tr>
 					{/each}

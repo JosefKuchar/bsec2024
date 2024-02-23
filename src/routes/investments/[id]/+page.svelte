@@ -5,6 +5,7 @@
     import AmountColor from '$lib/components/AmountColor.svelte';
     import { getTodayFormatted } from '$lib/utils';
     import { goto } from '$app/navigation';
+    import { fade } from 'svelte/transition';
 
     let minDate = getTodayFormatted();
 
@@ -80,12 +81,14 @@
 				        <input class="input w-40" title="From" type="date" bind:value={data.data.from} min={minDate}/>
                     </div>
 			</label>
-            <label class="label w-1/4">
+            {#if data.data.frequency != Frequency.OneTime}
+            <label class="label w-1/4" transition:fade>
 				<span>Do</span>
                 <div>
                     <input class="input w-40" title="To" type="date" bind:value={data.data.to} min={minDate}/>
                 </div>
 			</label>
+            {/if}
 			<label class="label w-1/4">
 				<span>Cena</span>
 				<div class="input-group input-group-divider grid-cols-[1fr_auto]">

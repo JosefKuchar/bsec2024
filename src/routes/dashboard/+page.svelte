@@ -144,6 +144,7 @@
 		}
 		graphValues = values;
 	}
+
 </script>
 
 <div>

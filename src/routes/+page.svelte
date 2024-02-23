@@ -70,14 +70,14 @@
 				const dateTo = moment(change.to);
 				if (change.frequency === Frequency.OneTime) {
 					if (dateFrom.isSame(now, 'day')) {
-						investments[change.investmentId] += change.amount / stocks[change.id];
+						investments[change.investmentId] += change.amount / stocks[change.investmentId];
 						currentChange -= change.amount;
 					}
 				} else {
 					if (now.isBetween(dateFrom, dateTo, 'day')) {
 						// Check if we hit interval
 						if (dateFrom.diff(now, 'days') % frequencyToDays(change.frequency) === 0) {
-							investments[change.investmentId] += change.amount / stocks[change.id];
+							investments[change.investmentId] += change.amount / stocks[change.investmentId];
 							currentChange -= change.amount;
 						}
 					}

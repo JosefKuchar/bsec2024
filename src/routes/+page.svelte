@@ -20,12 +20,8 @@
 	let minDate = getTodayFormatted();
 	let scenario: number = 2;
 
-	$: console.log('minDate', minDate);
-
 	export let data: PageData;
 
-	const handler = new DataHandler(data.transactions, { rowsPerPage: 10 });
-	const rows = handler.getRows();
 	let investmentValue = 0;
 	let changeValue = 0;
 
@@ -95,14 +91,6 @@
 			});
 			currentInvestment = value;
 
-			// Save current day
-			if (i % Math.max(1, Math.floor(duration / 100)) === 0) {
-				values.push(
-					{ group: 'Investice', date: now.toISOString(), value },
-					{ group: 'Volné prostředky', date: now.toISOString(), value: currentChange }
-				);
-			}
-
 			// Update rates for next day
 			data.investments.forEach((investment) => {
 				const rate = stocks[investment.id];
@@ -151,47 +139,5 @@
 			/>
 		</div>
 		<MainFrame {investmentValue} {changeValue}>Slot</MainFrame>
-		<h2 class="h2 mb-5 mt-5">Pohyby</h2>
-		<div class="table-container space-y-4">
-			<header class="flex justify-between gap-4">
-				<Search {handler} />
-				<div class="flex gap-4">
-					<RowsPerPage {handler} />
-				</div>
-			</header>
-			<table class="table table-hover table-compact table-auto w-full">
-				<thead>
-					<tr>
-						<ThSort {handler} orderBy="name">Název</ThSort>
-						<ThSort {handler} orderBy="amount">Částka</ThSort>
-						<ThSort {handler} orderBy="from">Datum</ThSort>
-					</tr>
-					<tr>
-						<ThFilter {handler} filterBy="name" />
-						<ThFilter {handler} filterBy="amount" />
-						<ThFilter {handler} filterBy="date" />
-					</tr>
-				</thead>
-				<tbody>
-					{#each $rows as row}
-						<tr class="cursor-pointer">
-							<td>{row.name}</td>
-							<td class={`${row.type == Dir.Incomes ? 'text-success-500' : 'text-error-500'}`}>
-								{#if row.type == Dir.Incomes}
-									+{:else}
-									-{/if}{row.amount} Kč</td
-							>
-							<td><Dateformatter date_string={row.date} /></td>
-
-							<!-- todo fix type missing in page data -->
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-			<footer class="flex justify-between">
-				<RowCount {handler} />
-				<Pagination {handler} />
-			</footer>
-		</div>
 	</div>
 </div>

@@ -40,8 +40,6 @@
 						<ThSort {handler} orderBy="name">Název</ThSort>
 						<ThSort {handler} orderBy="bic">BIC</ThSort>
 						<ThSort {handler} orderBy="isin">ISIN</ThSort>
-						<ThSort {handler} orderBy="min">Min. cena</ThSort>
-						<ThSort {handler} orderBy="max">Max. cena</ThSort>
 						<ThSort {handler} orderBy="rate">Cena</ThSort>
 						<ThSort {handler} orderBy="negative"><i class="las la-frown text-xl"></i> scénář</ThSort
 						>
@@ -54,8 +52,6 @@
 						<ThFilter {handler} filterBy="name" />
 						<ThFilter {handler} filterBy="bic" />
 						<ThFilter {handler} filterBy="isin" />
-						<ThFilter {handler} filterBy="min" />
-						<ThFilter {handler} filterBy="max" />
 						<ThFilter {handler} filterBy="rate" />
 						<ThFilter {handler} filterBy="negative" />
 						<ThFilter {handler} filterBy="neutral" />
@@ -69,8 +65,6 @@
 							<td>{row.name}</td>
 							<td>{row.bic}</td>
 							<td>{row.isin}</td>
-							<td>{row.min} Kč</td>
-							<td>{row.max} Kč</td>
 							<td>{row.rate} Kč</td>
 							<td><AmountColor value={row.negative}>{row.negative} %</AmountColor></td>
 							<td><AmountColor value={row.neutral}>{row.neutral} %</AmountColor></td>

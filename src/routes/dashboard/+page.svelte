@@ -6,6 +6,8 @@
 	import moment from 'moment';
 	import { frequencyToDays } from '$lib/utils';
 	import { ComboChart } from '@carbon/charts-svelte';
+	import { RadioGroup, RadioItem, popup } from '@skeletonlabs/skeleton';
+  
 
 	export let data: PageData;
 	let graphValues: {
@@ -14,8 +16,10 @@
 		value: number;
 	}[] = ([] = []);
 
+  let scenario : number = 2;
+
 	let options = {
-		title: 'Vývoj portfolia',
+		title: '',
 		axes: {
 			left: {
 				title: 'Hodnota (Kč)',
@@ -25,7 +29,8 @@
 			},
 			bottom: {
 				scaleType: 'time',
-				mapsTo: 'date'
+				mapsTo: 'date',
+				title: 'Datum'
 			}
 		},
 		curve: 'curveMonotoneX',
@@ -52,8 +57,6 @@
 	};
 
 	onMount(() => {
-		console.log(data);
-
 		let stocks: { [key: number]: number } = {};
 		data.investments.forEach((investment) => {
 			stocks[investment.id] = investment.rate;
@@ -82,7 +85,7 @@
 						currentChange += amount;
 					}
 				} else {
-					if (now.isSameOrAfter(dateFrom, 'day') && dateTo.isSameOrBefore(now, 'day')) {
+					if (now.isBetween(dateFrom, dateTo, 'day')) {
 						// Check if we hit interval
 						if (dateFrom.diff(now, 'days') % frequencyToDays(change.frequency) === 0) {
 							currentChange += amount;
@@ -101,11 +104,9 @@
 						currentChange -= change.amount;
 					}
 				} else {
-					if (now.isSameOrAfter(dateFrom, 'day') && dateTo.isSameOrBefore(now, 'day')) {
+					if (now.isBetween(dateFrom, dateTo, 'day')) {
 						// Check if we hit interval
-						console.log('diff', now.diff(dateFrom, 'days'), frequencyToDays(change.frequency));
 						if (dateFrom.diff(now, 'days') % frequencyToDays(change.frequency) === 0) {
-							console.log('hit', now);
 							investments[change.investmentId] += change.amount / stocks[change.id];
 							currentChange -= change.amount;
 						}
@@ -138,10 +139,26 @@
 	});
 </script>
 
-<h1 class="h1">Graf</h1>
-{#if graphValues.length === 0}
-	<p>Načítám data...</p>
-{:else}
-	<ComboChart data={graphValues} {options} />
-{/if}
-<div class="p-10"></div>
+<div>
+  <div class="flex items-center w-full">
+    <h1 class="h1 flex-col pb-5">Vývoj portfolia</h1>
+  </div>
+  <div class="w-full">
+    <div class="w-full">
+      <div class="flex items-center justify-center h2">
+        <RadioGroup>
+          <RadioItem bind:group={scenario} name="justify" value={0}><i class="las la-frown text-xl"></i> scénář</RadioItem>
+          <RadioItem bind:group={scenario} name="justify" value={1}><i class="las la-meh text-xl"></i> scénář</RadioItem>
+          <RadioItem bind:group={scenario} name="justify" value={2}><i class="las la-laugh text-xl"></i> scénář</RadioItem>
+        </RadioGroup>
+      </div>
+    </div>
+  </div>
+  {#if graphValues.length === 0}
+    <p>Načítám data...</p>
+  {:else}
+    <ComboChart data={graphValues} {options} />
+  {/if}
+  <div class="p-10"></div>
+</div>
+

@@ -70,7 +70,7 @@
 	</div>
 	<div class="py-8">
 		<input class="input" type="search" name="autocomplete-search" bind:value={inputType} placeholder="Search..." use:popup={popupSettings} />
-		<div data-popup="popupAutocomplete">
+		<div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1" data-popup="popupAutocomplete">
 			<Autocomplete bind:input={inputType} options={filteredTypes} on:selection={onFlavorSelection} />
 		</div>
 	</div>

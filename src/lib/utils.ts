@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { Frequency } from './enums';
 
 export function getTodayFormatted(): string {
@@ -18,4 +19,22 @@ export function getFrequencyString(frequency: Frequency) {
 		case Frequency.Yearly:
 			return 'Ročně';
 	}
+}
+
+export function frequencyToDays(frequency: Frequency) {
+	switch (frequency) {
+		case Frequency.OneTime:
+			throw new Error('OneTime frequency is not supported');
+		case Frequency.Daily:
+			return 1;
+		case Frequency.Weekly:
+			return 7;
+		case Frequency.Monthly:
+			return 30;
+		case Frequency.Yearly:
+			return 365;
+	}
+}
+export function getDate(date: Date): string {
+	return moment(date).format('DD.MM.YYYY');
 }

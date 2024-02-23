@@ -5,22 +5,48 @@
 	import { Frequency } from '$lib/enums';
 	import { getTodayFormatted } from '$lib/utils';
 	import { Autocomplete } from '@skeletonlabs/skeleton';
-	import type { AutocompleteOption } from '@skeletonlabs/skeleton';
+	import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
+	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
+	import { storePopup } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
 
 	const handleSubmit = (e: Event) => {
 		e.preventDefault();
-		fetch(`/api/change/new`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data.data)
-		}).then(() => {
-			goto('/change');
-		});
+		if(is_create) {
+			fetch(`/api/change/new`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data.data)
+			}).then(() => {
+				goto('/change');
+			});
+		} else {
+			fetch(`/api/change/edit`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data.data)
+			}).then(() => {
+				goto('/change');
+			});
+		}
 	};
+
+	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+
+	let popupSettings: PopupSettings = {
+	event: 'focus-click',
+	target: 'popupAutocomplete',
+	placement: 'bottom',
+	};
+
+	let is_create = data.data.id == 0 ? true : false;
+
+	console.log(is_create);
 
 	let inputType  = data.changeTypes.find((type) => Number(type.value) === data.data.typeId)?.label;
 
@@ -38,56 +64,78 @@
 	$: filteredTypes = data.changeTypes.filter((type) => type.dir === data.data.dir);
 </script>
 
-<div>
-	<!-- input suma -->
-	<input class="input" type="search" name="demo" bind:value={inputType} placeholder="Search..." />
-	<div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1">
-		<Autocomplete bind:input={inputType} options={filteredTypes} on:selection={onFlavorSelection} />
+<div class="felx col-auto bg-clip-padding">
+	<div>
+		<span class="text-lg font-bold">Typ</span>
 	</div>
-
-	<input class="input" type="number" placeholder="Suma" bind:value={data.data.amount} />
-
-	<RadioGroup>
-		<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.OneTime}
-			>Jednorázově</RadioItem
-		>
-		<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Daily}
-			>Denně</RadioItem
-		>
-		<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Monthly}
-			>Týdně</RadioItem
-		>
-		<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Weekly}
-			>Měsíčně</RadioItem
-		>
-		<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Yearly}
-			>Ročně</RadioItem
-		>
-	</RadioGroup>
-	<!-- time picker -->
-
-	<!-- add button -->
-	{#if data.data.frequency === Frequency.OneTime}
-		<input
-			class="input w-40"
-			title="Input (date)"
-			type="date"
-			bind:value={data.data.from}
-		/>
-	{:else}
-		<input
-			class="input w-40"
-			title="Input (date)"
-			type="date"
-			bind:value={data.data.from}
-		/>
-
-		<input
-			class="input w-40"
-			title="Input (date)"
-			type="date"
-			bind:value={data.data.to}
-		/>
-	{/if}
-	<button type="button" class="btn variant-filled" on:click={handleSubmit}>Uložit</button>
+	<div class="py-8">
+		<input class="input" type="search" name="autocomplete-search" bind:value={inputType} placeholder="Search..." use:popup={popupSettings} />
+		<div data-popup="popupAutocomplete">
+			<Autocomplete bind:input={inputType} options={filteredTypes} on:selection={onFlavorSelection} />
+		</div>
+	</div>
+	<div>
+		<span class="text-lg font-bold">Suma</span>
+	</div>
+	<div class="py-4">
+		<input class="input" type="number" placeholder="Suma" bind:value={data.data.amount} />
+	</div>
+	<div>
+		<span class="text-lg font-bold">Frekvence</span>
+	</div>
+	<div class="py-4">
+		<RadioGroup>
+			<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.OneTime}
+				>Jednorázově</RadioItem
+			>
+			<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Daily}
+				>Denně</RadioItem
+			>
+			<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Monthly}
+				>Týdně</RadioItem
+			>
+			<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Weekly}
+				>Měsíčně</RadioItem
+			>
+			<RadioItem bind:group={data.data.frequency} name="justify" value={Frequency.Yearly}
+				>Ročně</RadioItem
+			>
+		</RadioGroup>
+	</div>
+	<div>
+		<span class="text-lg font-bold">Od</span>
+	</div>
+	<div class="py-4">
+		{#if data.data.frequency === Frequency.OneTime}
+			<input
+				class="input w-40"
+				title="Input (date)"
+				type="date"
+				bind:value={data.data.from}
+			/>
+		{:else}
+			<input
+				class="input w-40"
+				title="Input (date)"
+				type="date"
+				bind:value={data.data.from}
+			/>
+			<div>
+				<span class="text-lg font-bold">Do</span>
+			</div>
+			<input
+				class="input w-40"
+				title="Input (date)"
+				type="date"
+				bind:value={data.data.to}
+			/>
+		{/if}
+	</div>
+	<div class="py-4">
+		{#if is_create}
+			<button type="button" class="btn variant-filled" on:click={handleSubmit}>Vytvořit</button>
+		{:else}
+			<button type="button" class="btn variant-filled" on:click={handleSubmit}>Uložit</button>
+		{/if}
+	</div>
 </div>

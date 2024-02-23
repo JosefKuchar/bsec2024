@@ -30,42 +30,6 @@
 	const handleEditClick = (stockId: number) => {
 		goto(`/change/${stockId}`);
 	};
-
-	let inputPopupDemo: string = '';
-
-	function onPopupDemoSelect(event: CustomEvent<AutocompleteOption<string>>): void {
-		inputPopupDemo = event.detail.label;
-	}
-
-	const flavorOptions: AutocompleteOption<string>[] = [
-		{ label: 'Vanilla', value: 'vanilla', keywords: 'plain, basic', meta: { healthy: false } },
-		{ label: 'Chocolate', value: 'chocolate', keywords: 'dark, white', meta: { healthy: false } },
-		{ label: 'Strawberry', value: 'strawberry', keywords: 'fruit', meta: { healthy: true } },
-		{
-			label: 'Neapolitan',
-			value: 'neapolitan',
-			keywords: 'mix, strawberry, chocolate, vanilla',
-			meta: { healthy: false }
-		},
-		{ label: 'Pineapple', value: 'pineapple', keywords: 'fruit', meta: { healthy: true } },
-		{ label: 'Peach', value: 'peach', keywords: 'fruit', meta: { healthy: true } }
-	];
-
-	// date
-	let selectedDate = getTodayFormatted();
-
-	const handleSubmit = (e: Event) => {
-		e.preventDefault();
-		fetch(`/api/change/add`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(formdata)
-		}).then(() => {
-			goto('/change');
-		});
-	};
 </script>
 
 <div>
@@ -90,14 +54,14 @@
 			<table class="table table-hover table-compact table-auto w-full">
 				<thead>
 					<tr>
-						<ThSort {handler} orderBy="name">Název</ThSort>
+						<ThSort {handler} orderBy="type">Název</ThSort>
 						<ThSort {handler} orderBy="amount">Částka</ThSort>
 						<ThSort {handler} orderBy="from">Od</ThSort>
 						<ThSort {handler} orderBy="to">Do</ThSort>
 						<ThSort {handler} orderBy="frequency">Frekvence</ThSort>
 					</tr>
 					<tr>
-						<ThFilter {handler} filterBy="name" />
+						<ThFilter {handler} filterBy="type" />
 						<ThFilter {handler} filterBy="amount" />
 						<ThFilter {handler} filterBy="from" />
 						<ThFilter {handler} filterBy="to" />
@@ -107,16 +71,15 @@
 				<tbody>
 					{#each $rows as row}
 						<tr on:click={() => handleEditClick(row.id)} class="cursor-pointer">
-							<td>{row.type.name}</td>
+							<td>{row.type}</td>
 							<td>{row.amount} Kč</td>
-							<td>
-								<Dateformatter date_string={row.from} />
-							</td>
-							<td>
-								<Dateformatter date_string={row.to} />
-							</td>
+							<td>{row.from}</td>
+							{#if row.frequency == 'Jednorázově'}
+							<td><span class="font-bold">-</span></td>
+							{:else}
+							<td>{row.to}</td>
+							{/if}
 							<td>{row.frequency}</td>
-							<!-- todo fix type missing in page data -->
 						</tr>
 					{/each}
 				</tbody>

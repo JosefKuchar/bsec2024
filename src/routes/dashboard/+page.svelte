@@ -16,6 +16,18 @@
 	}[] = ([] = []);
 
 	let scenario: number = 2;
+	let interval: number = 1;
+
+	const currentDate = new Date();
+	let limitDate = new Date();
+
+	const dateMapping = {
+		1: 30,
+		2: 365,
+		3: 365 * 5,
+		4: 365 * 10,
+		5: 365 * 20
+	};
 
 	let options = {
 		title: '',
@@ -71,7 +83,7 @@
 			date: string;
 			value: number;
 		}[] = [];
-		let duration = 100;
+		let duration = dateMapping[interval];
 		let currentChange = 0;
 
 		for (let i = 0; i < duration; i++) {
@@ -120,10 +132,12 @@
 			});
 
 			// Save current day
-			values.push(
-				{ group: 'Investice', date: now.toISOString(), value },
-				{ group: 'Volné prostředky', date: now.toISOString(), value: currentChange }
-			);
+			if (i % Math.max(1, Math.floor(duration / 100)) === 0) {
+				values.push(
+					{ group: 'Investice', date: now.toISOString(), value },
+					{ group: 'Volné prostředky', date: now.toISOString(), value: currentChange }
+				);
+			}
 
 			// Update rates for next day
 			data.investments.forEach((investment) => {
@@ -144,7 +158,6 @@
 		}
 		graphValues = values;
 	}
-
 </script>
 
 <div>
@@ -153,7 +166,7 @@
 	</div>
 	<div class="w-full">
 		<div class="w-full">
-			<div class="flex items-center justify-center h2">
+			<div class="flex items-center justify-center h2 gap-5">
 				<RadioGroup>
 					<RadioItem bind:group={scenario} name="justify" value={0}
 						><i class="las la-frown text-xl"></i> scénář</RadioItem
@@ -164,6 +177,13 @@
 					<RadioItem bind:group={scenario} name="justify" value={2}
 						><i class="las la-laugh text-xl"></i> scénář</RadioItem
 					>
+				</RadioGroup>
+				<RadioGroup>
+					<RadioItem bind:group={interval} name="justify" value={1}>Měsíc</RadioItem>
+					<RadioItem bind:group={interval} name="justify" value={2}>Rok</RadioItem>
+					<RadioItem bind:group={interval} name="justify" value={3}>5 let</RadioItem>
+					<RadioItem bind:group={interval} name="justify" value={4}>10 let</RadioItem>
+					<RadioItem bind:group={interval} name="justify" value={5}>20 let</RadioItem>
 				</RadioGroup>
 			</div>
 		</div>

@@ -5,7 +5,9 @@
 	import { Frequency } from '$lib/enums';
 	import { getTodayFormatted } from '$lib/utils';
 	import { Autocomplete } from '@skeletonlabs/skeleton';
-	import type { AutocompleteOption } from '@skeletonlabs/skeleton';
+	import type { AutocompleteOption, PopupSettings } from '@skeletonlabs/skeleton';
+	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
+	import { storePopup } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
 
@@ -34,6 +36,14 @@
 		}
 	};
 
+	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+
+	let popupSettings: PopupSettings = {
+	event: 'focus-click',
+	target: 'popupAutocomplete',
+	placement: 'bottom',
+	};
+
 	let is_create = data.data.id == 0 ? true : false;
 
 	console.log(is_create);
@@ -55,13 +65,12 @@
 </script>
 
 <div class="felx col-auto bg-clip-padding">
-	<!-- input suma -->
 	<div>
 		<span class="text-lg font-bold">Typ</span>
 	</div>
 	<div class="py-8">
-		<input class="input" type="search" name="demo" bind:value={inputType} placeholder="Search..." />
-		<div class="card w-full max-w-sm max-h-48 p-4 overflow-y-auto" tabindex="-1">
+		<input class="input" type="search" name="autocomplete-search" bind:value={inputType} placeholder="Search..." use:popup={popupSettings} />
+		<div data-popup="popupAutocomplete">
 			<Autocomplete bind:input={inputType} options={filteredTypes} on:selection={onFlavorSelection} />
 		</div>
 	</div>

@@ -46,6 +46,7 @@
 	},
 	"dependencies": {
 		"@carbon/charts-svelte": "^1.14.3",
+		"@floating-ui/dom": "^1.6.3",
 		"@prisma/client": "^5.10.2",
 		"@vincjo/datatables": "^1.14.5",
 		"chartjs": "^0.3.24",

@@ -45,7 +45,7 @@
 		let currentChange = 0;
 		let currentInvestment = 0;
 
-		for (let i = 0; i < duration; i++) {
+		for (let i = 0; i <= duration; i++) {
 			data.change.forEach((change) => {
 				const dateFrom = moment(change.from);
 				const dateTo = moment(change.to);

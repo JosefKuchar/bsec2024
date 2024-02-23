@@ -19,7 +19,6 @@
 	let interval: number = 1;
 
 	const currentDate = new Date();
-	let limitDate = new Date();
 
 	const dateMapping = {
 		1: 30,

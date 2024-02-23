@@ -9,6 +9,8 @@
 	import type { PageData } from './$types';
 	import AmountColor from '$lib/components/AmountColor.svelte';
 	import { goto } from '$app/navigation';
+	import Dateformatter from '$lib/dateformatter.svelte';
+
 
 	export let data: PageData;
 	const handler = new DataHandler(data.investmentChange, { rowsPerPage: 10 });
@@ -38,17 +40,17 @@
 						<ThSort {handler} orderBy="name">Název</ThSort>
 						<ThSort {handler} orderBy="bic">BIC</ThSort>
 						<ThSort {handler} orderBy="frequency">Frekvence</ThSort>
-						<ThSort {handler} orderBy="rate">Kurz</ThSort>
-						<ThSort {handler} orderBy="amount">Množství</ThSort>
+						<ThSort {handler} orderBy="from">Od</ThSort>
+						<ThSort {handler} orderBy="to">Do</ThSort>
 						<ThSort {handler} orderBy="price">Cena</ThSort>
 					</tr>
 					<tr>
 						<ThFilter {handler} filterBy="name" />
 						<ThFilter {handler} filterBy="bic" />
 						<ThFilter {handler} filterBy="frequency" />
-						<ThFilter {handler} filterBy="rate" />
+						<ThFilter {handler} filterBy="from" />
+						<ThFilter {handler} filterBy="to" />
 						<ThFilter {handler} filterBy="amount" />
-						<ThFilter {handler} filterBy="price" />
 					</tr>
 				</thead>
 				<tbody>
@@ -57,9 +59,13 @@
 							<td>{row.investment.name}</td>
 							<td>{row.investment.bic}</td>
 							<td>{row.frequency}</td>
-							<td>{row.investment.rate} Kč</td>
-							<td>{row.amount}</td>
-							<td>{row.amount * row.investment.rate} Kč</td>
+							<td>
+								<Dateformatter date_string={row.from} />
+							</td>
+							<td>
+								<Dateformatter date_string={row.to} />
+							</td>
+							<td>{row.amount} Kč</td>
 						</tr>
 					{/each}
 				</tbody>

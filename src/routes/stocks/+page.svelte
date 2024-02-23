@@ -17,6 +17,10 @@
 	const handleEditClick = (stockId: number) => {
 		goto(`/stocks/${stockId}`);
 	};
+
+	const handleBuyClick = (stockId: number) => {
+		goto(`/investments/new?stock=${stockId}`);
+	};
 </script>
 
 <div>
@@ -71,13 +75,11 @@
 							<td><AmountColor value={row.negative}>{row.negative} %</AmountColor></td>
 							<td><AmountColor value={row.neutral}>{row.neutral} %</AmountColor></td>
 							<td><AmountColor value={row.positive}>{row.positive} %</AmountColor></td>
-							<td
-								><a href="/todo"
-									><button type="button" class="btn-icon variant-filled-primary"
-										><i class="las la-money-check-alt"></i></button
-									></a
-								></td
-							>
+							<td on:click|stopPropagation={() => handleBuyClick(row.id)}>
+								<button type="button" class="btn-icon variant-filled-primary">
+									<i class="las la-money-check-alt"></i>
+								</button>
+							</td>
 						</tr>
 					{/each}
 				</tbody>

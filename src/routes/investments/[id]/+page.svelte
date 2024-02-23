@@ -3,32 +3,46 @@
     import { Frequency} from '$lib/enums';
     import { RadioGroup, RadioItem } from '@skeletonlabs/skeleton';
     import AmountColor from '$lib/components/AmountColor.svelte';
+    import { getTodayFormatted } from '$lib/utils';
+    import { goto } from '$app/navigation';
+
+    let minDate = getTodayFormatted();
 
 
     export let data: PageData;
 
     const handleSubmit = (e: Event) => {
-        // e.preventDefault();
-        // fetch(`/api/investments/${data.data.id}/add`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(data.data)
-        // }).then(() => {
-        //     console.log('success');
-        // });
-        console.log(data.data);
+        e.preventDefault();
+        if (data.data.id == 0) {
+            fetch(`/api/investments/new`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data.data)
+            }).then(() => {
+                goto('/investments');
+            });
+        } else {
+            fetch(`/api/investments/edit`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data.data)
+            }).then(() => {
+                goto('/investments');
+            });
+        }
+
     };
+
+    $: console.log('from', data.data.from);
 </script>
 
 
-{#if data.data.id === 0}
-	<h1 class="h1 my-5">Nová akcie</h1>
-{:else}
-	<h1 class="h1 mt-5">{data.data.investment.name}</h1>
-    <span class="h3">{data.data.investment.bic}</span>
-{/if}
+<h1 class="h1 mt-5">{data.data.investment.name}</h1>
+<span class="h3">{data.data.investment.bic}</span>
 <div>
     <h2 class="h2 mt-5">{data.data.investment.rate} Kč</h2>
     <div class="grid grid-cols-3 w-1/4 mb-5">
@@ -60,11 +74,23 @@
                     </RadioGroup>
                 </div>
             </label>
+            <label class="label w-1/4">
+				    <span>Od</span>
+                    <div>
+				        <input class="input w-40" title="From" type="date" bind:value={data.data.from} min={minDate}/>
+                    </div>
+			</label>
+            <label class="label w-1/4">
+				<span>Do</span>
+                <div>
+                    <input class="input w-40" title="To" type="date" bind:value={data.data.to} min={minDate}/>
+                </div>
+			</label>
 			<label class="label w-1/4">
-				<span>Množství</span>
+				<span>Cena</span>
 				<div class="input-group input-group-divider grid-cols-[1fr_auto]">
 					<input bind:value={data.data.amount} type="number" min=0/>
-					<div class="input-group-shim">Ks</div>
+					<div class="input-group-shim">Kč</div>
 				</div>
 			</label>
 			<button type="submit" class="btn variant-filled-primary">Uložit</button>

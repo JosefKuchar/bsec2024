@@ -1,6 +1,7 @@
 import { Dir } from '$lib/enums';
 import prisma from '$lib/prisma';
 import type { PageServerLoad } from './$types';
+import moment from 'moment';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const changeTypes = await (
@@ -48,5 +49,8 @@ export const load: PageServerLoad = async ({ params }) => {
 			id: parseInt(params.id)
 		}
 	});
-	return { data: response!, changeTypes };
+	return { data : {...response,
+		from: moment(response!.from).format('YYYY-MM-DD'),
+		to: moment(response!.to).format('YYYY-MM-DD'),
+	}, changeTypes };
 };

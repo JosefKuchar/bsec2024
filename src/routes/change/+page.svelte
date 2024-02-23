@@ -30,42 +30,6 @@
 	const handleEditClick = (stockId: number) => {
 		goto(`/change/${stockId}`);
 	};
-
-	let inputPopupDemo: string = '';
-
-	function onPopupDemoSelect(event: CustomEvent<AutocompleteOption<string>>): void {
-		inputPopupDemo = event.detail.label;
-	}
-
-	const flavorOptions: AutocompleteOption<string>[] = [
-		{ label: 'Vanilla', value: 'vanilla', keywords: 'plain, basic', meta: { healthy: false } },
-		{ label: 'Chocolate', value: 'chocolate', keywords: 'dark, white', meta: { healthy: false } },
-		{ label: 'Strawberry', value: 'strawberry', keywords: 'fruit', meta: { healthy: true } },
-		{
-			label: 'Neapolitan',
-			value: 'neapolitan',
-			keywords: 'mix, strawberry, chocolate, vanilla',
-			meta: { healthy: false }
-		},
-		{ label: 'Pineapple', value: 'pineapple', keywords: 'fruit', meta: { healthy: true } },
-		{ label: 'Peach', value: 'peach', keywords: 'fruit', meta: { healthy: true } }
-	];
-
-	// date
-	let selectedDate = getTodayFormatted();
-
-	const handleSubmit = (e: Event) => {
-		e.preventDefault();
-		fetch(`/api/change/add`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(formdata)
-		}).then(() => {
-			goto('/change');
-		});
-	};
 </script>
 
 <div>

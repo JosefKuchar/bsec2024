@@ -48,5 +48,7 @@ model InvestmentChange {
   investmentId Int
   frequency    Int
   amount       Int
+  from         DateTime
+  to           DateTime
   investment   Investment @relation(fields: [investmentId], references: [id])
 }

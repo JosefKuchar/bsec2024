@@ -42,7 +42,7 @@
 	];
 
 	let count = 0;
-	const target = investmentValue + changeValue; // Final number
+	$: target = investmentValue + changeValue; // Final number
 	const duration = 6000; // Duration of the animation in milliseconds
 	let interval = duration / target; // Calculate interval time
 

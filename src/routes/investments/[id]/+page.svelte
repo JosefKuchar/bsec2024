@@ -6,6 +6,20 @@
 
 
     export let data: PageData;
+
+    const handleSubmit = (e: Event) => {
+        // e.preventDefault();
+        // fetch(`/api/investments/${data.data.id}/add`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(data.data)
+        // }).then(() => {
+        //     console.log('success');
+        // });
+        console.log(data.data);
+    };
 </script>
 
 

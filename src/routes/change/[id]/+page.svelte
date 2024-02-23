@@ -11,16 +11,32 @@
 
 	const handleSubmit = (e: Event) => {
 		e.preventDefault();
-		fetch(`/api/change/new`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data.data)
-		}).then(() => {
-			goto('/change');
-		});
+		if(is_create) {
+			fetch(`/api/change/new`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data.data)
+			}).then(() => {
+				goto('/change');
+			});
+		} else {
+			fetch(`/api/change/edit`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data.data)
+			}).then(() => {
+				goto('/change');
+			});
+		}
 	};
+
+	let is_create = data.data.id == 0 ? true : false;
+
+	console.log(is_create);
 
 	let inputType  = data.changeTypes.find((type) => Number(type.value) === data.data.typeId)?.label;
 
@@ -107,6 +123,10 @@
 		{/if}
 	</div>
 	<div class="py-4">
-		<button type="button" class="btn variant-filled" on:click={handleSubmit}>Uložit</button>
+		{#if is_create}
+			<button type="button" class="btn variant-filled" on:click={handleSubmit}>Vytvořit</button>
+		{:else}
+			<button type="button" class="btn variant-filled" on:click={handleSubmit}>Uložit</button>
+		{/if}
 	</div>
 </div>

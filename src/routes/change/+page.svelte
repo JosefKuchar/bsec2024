@@ -90,14 +90,14 @@
 			<table class="table table-hover table-compact table-auto w-full">
 				<thead>
 					<tr>
-						<ThSort {handler} orderBy="name">Název</ThSort>
+						<ThSort {handler} orderBy="type">Název</ThSort>
 						<ThSort {handler} orderBy="amount">Částka</ThSort>
 						<ThSort {handler} orderBy="from">Od</ThSort>
 						<ThSort {handler} orderBy="to">Do</ThSort>
 						<ThSort {handler} orderBy="frequency">Frekvence</ThSort>
 					</tr>
 					<tr>
-						<ThFilter {handler} filterBy="name" />
+						<ThFilter {handler} filterBy="type" />
 						<ThFilter {handler} filterBy="amount" />
 						<ThFilter {handler} filterBy="from" />
 						<ThFilter {handler} filterBy="to" />
@@ -107,14 +107,10 @@
 				<tbody>
 					{#each $rows as row}
 						<tr on:click={() => handleEditClick(row.id)} class="cursor-pointer">
-							<td>{row.type.name}</td>
+							<td>{row.type}</td>
 							<td>{row.amount} Kč</td>
-							<td>
-								<Dateformatter date_string={row.from} />
-							</td>
-							<td>
-								<Dateformatter date_string={row.to} />
-							</td>
+							<td>{row.from}</td>
+							<td>{row.to}</td>
 							<td>{row.frequency}</td>
 							<!-- todo fix type missing in page data -->
 						</tr>

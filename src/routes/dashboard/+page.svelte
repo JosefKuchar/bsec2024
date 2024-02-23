@@ -7,7 +7,6 @@
 	import { frequencyToDays } from '$lib/utils';
 	import { ComboChart } from '@carbon/charts-svelte';
 	import { RadioGroup, RadioItem, popup } from '@skeletonlabs/skeleton';
-  
 
 	export let data: PageData;
 	let graphValues: {
@@ -16,7 +15,7 @@
 		value: number;
 	}[] = ([] = []);
 
-  let scenario : number = 2;
+	let scenario: number = 2;
 
 	let options = {
 		title: '',
@@ -56,7 +55,7 @@
 		theme: 'g100'
 	};
 
-	onMount(() => {
+	$: {
 		let stocks: { [key: number]: number } = {};
 		data.investments.forEach((investment) => {
 			stocks[investment.id] = investment.rate;
@@ -129,36 +128,49 @@
 			// Update rates for next day
 			data.investments.forEach((investment) => {
 				const rate = stocks[investment.id];
-				stocks[investment.id] = rate + (rate * investment.neutral) / 100 / 365;
+				let s = 0;
+				if (scenario === 0) {
+					s = investment.negative;
+				} else if (scenario === 1) {
+					s = investment.neutral;
+				} else {
+					s = investment.positive;
+				}
+				stocks[investment.id] = rate + (rate * s) / 100 / 365;
 			});
 
 			// Move to next day
 			now.add(1, 'day');
 		}
 		graphValues = values;
-	});
+	}
 </script>
 
 <div>
-  <div class="flex items-center w-full">
-    <h1 class="h1 flex-col pb-5">Vývoj portfolia</h1>
-  </div>
-  <div class="w-full">
-    <div class="w-full">
-      <div class="flex items-center justify-center h2">
-        <RadioGroup>
-          <RadioItem bind:group={scenario} name="justify" value={0}><i class="las la-frown text-xl"></i> scénář</RadioItem>
-          <RadioItem bind:group={scenario} name="justify" value={1}><i class="las la-meh text-xl"></i> scénář</RadioItem>
-          <RadioItem bind:group={scenario} name="justify" value={2}><i class="las la-laugh text-xl"></i> scénář</RadioItem>
-        </RadioGroup>
-      </div>
-    </div>
-  </div>
-  {#if graphValues.length === 0}
-    <p>Načítám data...</p>
-  {:else}
-    <ComboChart data={graphValues} {options} />
-  {/if}
-  <div class="p-10"></div>
+	<div class="flex items-center w-full">
+		<h1 class="h1 flex-col pb-5">Vývoj portfolia</h1>
+	</div>
+	<div class="w-full">
+		<div class="w-full">
+			<div class="flex items-center justify-center h2">
+				<RadioGroup>
+					<RadioItem bind:group={scenario} name="justify" value={0}
+						><i class="las la-frown text-xl"></i> scénář</RadioItem
+					>
+					<RadioItem bind:group={scenario} name="justify" value={1}
+						><i class="las la-meh text-xl"></i> scénář</RadioItem
+					>
+					<RadioItem bind:group={scenario} name="justify" value={2}
+						><i class="las la-laugh text-xl"></i> scénář</RadioItem
+					>
+				</RadioGroup>
+			</div>
+		</div>
+	</div>
+	{#if graphValues.length === 0}
+		<p>Načítám data...</p>
+	{:else}
+		<ComboChart data={graphValues} {options} />
+	{/if}
+	<div class="p-10"></div>
 </div>
-
